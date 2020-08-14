@@ -1,0 +1,31 @@
+.headerContainer{
+    background-color: #219653;
+    color:white;
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+}
+.logoHolder{
+    height: 100%;
+    width: 150px;
+    padding: 10px;
+    position: center;
+}
+.headerMenu{
+    display: flex;
+    list-style-type: none;
+}
+.headerMenu li{
+    width: 100px;
+    height: 100%;
+    line-height: 60px;
+    text-align: center;
+}
+.headerMenu li:hover{
+    backdrop-filter: brightness(90%);
+}
+.fa{
+    width: 30px;
+}
