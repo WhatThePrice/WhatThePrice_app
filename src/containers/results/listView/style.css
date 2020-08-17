@@ -1,0 +1,21 @@
+.container{
+    margin: 0 auto;
+    width: 1000px;
+}
+.resultContainer{
+    display: grid;
+    margin-top:20px;
+}
+.cardHolder{
+    display: grid;
+    grid-column:1/2;
+}
+.listHolderContainer{
+    grid-column: 2/6;
+}
+.listHolder{
+    height: 450px;
+    scroll-behavior: smooth;
+    overflow: scroll;
+    display: grid;
+}

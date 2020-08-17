@@ -1,0 +1,35 @@
+.listContainer{
+    height: 60px;
+    width: 100%;
+    border: 1px solid black;
+    display: grid;
+}
+.listContainer:hover{
+    background-color: gray;
+}
+.infoColumn{
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+}
+.platformColumn{
+    grid-column: 1/2;
+}
+.nameColumn{
+    grid-column: 2/6;
+}
+.priceColumn{
+    grid-column: 6/7;
+    border-right: 1px solid black;
+}
+.linkColumn{
+    grid-column:7/8;
+    border-right: 1px solid black;
+    background-color: lightgoldenrodyellow;
+}
+.linkColumn:hover{
+    background-color: yellow;
+    transform: scale(1.1);
+}

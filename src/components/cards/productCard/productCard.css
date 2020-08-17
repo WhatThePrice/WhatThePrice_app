@@ -1,39 +1,47 @@
 .cardHolder{
     width:300px;
-    height:400px;
-    margin: 0 auto;
+    height:480px;
     border: 2px solid #219653;
     border-radius: 10px;
     overflow: hidden;
 }
 .productImgHolder{
     height: 150px;
-    margin: 25px;
+    margin: 30px 25px;
     border: 1px solid black;
+    background-color: red;
 }
 .productImg{
     background-color: gray;
     width: 100%;
     height: 100%;
 }
+.productNameHolder{
+    margin: 0 25px;
+}
 .productInfoHolder{
     height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    margin-top: 20px;
 }
 .productInfoList{
     list-style-type: none;
+}
+.productName{
+    font-size:15px;
 }
 .productInfoList li{
     height: 40px;
     border-top: 1px solid black;
     padding: 10px;
     text-align: center;
+    font-size:15px;
 }
 .productLink{
     background-color: #219653;
     color: white;
-    
+}
+.productLink:hover{
+    transform: scale(1.1);
 }

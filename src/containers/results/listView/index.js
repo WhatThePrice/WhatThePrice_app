@@ -1,21 +1,35 @@
 import React from "react";
+import "./style.css"
+
+//Components
+import ProductCard from "../../../components/cards/productCard";
+import ProductList from "../../../components/lists/productList"
 
 class ListView extends React.Component{
     render() {
         return(
-            <div>
-                <h1>Query (no of results) </h1>
-                <div>
-                    <div>
-                        <h1>Component</h1>
+            <div className="container">
+                <h1 className="queryText">Query <span className="querySum">(no of results)</span> </h1>
+                <div className="resultContainer">
+                    <div className="cardHolder">
+                        <div>
+                            <h1> <ProductCard /></h1>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <h1>Result</h1>
-                    <p>result1</p>
-                    <p>result1</p>
-                    <p>result1</p>
-                    <p>result1</p>
+                    <div className="listHolderContainer">
+                        <h1>Results</h1>
+                        <div className="listHolder">
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                            <ProductList />
+                        </div>
+                    </div>
                 </div>
             </div>
         )
