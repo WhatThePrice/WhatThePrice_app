@@ -1,23 +1,23 @@
 export const NAME = "QUERY";
 
-export const GET_RESULT = `${NAME}/GET_RESULT`;
-export const GET_RESULT_SUCCESS = `${NAME}/GET_RESULT_SUCCESS`;
-export const GET_RESULT_FAIL = `${NAME}/GET_RESULT_FAIL`;
-export const RESET_GET_RESULT = `${NAME}/RESET_GET_RESULT`;
+export const RESULT = `${NAME}/RESULT`;
+export const RESULT_SUCCESS = `${NAME}/RESULT_SUCCESS`;
+export const RESULT_FAIL = `${NAME}/RESULT_FAIL`;
+export const RESET_RESULT = `${NAME}/RESET_RESULT`;
 
-export const getResultData = store => store[NAME].getResult;
+export const getResultData = store => store[NAME].result;
 
-export const getResult = data => ({
-    type: GET_RESULT,
+export const result = data => ({
+    type: RESULT,
     data
 });
 
-export const getResultSuccess = data => ({
-    type: GET_RESULT_SUCCESS,
+export const resultSuccess = data => ({
+    type: RESULT_SUCCESS,
     data
 });
 
-export const getResultFail = error => ({
-    type: GET_RESULT_FAIL,
+export const resultFail = error => ({
+    type: RESULT_FAIL,
     error
 });
