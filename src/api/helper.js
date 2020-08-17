@@ -17,7 +17,7 @@ export const getHeader = () => {
 };
 
 const getFullUrl = endpoint => {
-  return "http://api.orionex.cc/" + endpoint;
+  return "https://api-sandbox-286406.et.r.appspot.com/api/v1/" + endpoint;
 };
 
 const fetchApi = (method, endpoint, params, headers) =>
