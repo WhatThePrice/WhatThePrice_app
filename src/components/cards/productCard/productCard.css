@@ -35,12 +35,19 @@
 .productInfoList li{
     height: 40px;
     border-top: 1px solid black;
-    padding: 10px;
+    padding: 0 5px;
     text-align: center;
+    line-height: 40px;
     font-size:15px;
+}
+.platformLogo{
+    background-size: cover;
 }
 .productLink{
     background-color: #219653;
+}
+.productLink a{
+    text-decoration: none;
     color: white;
 }
 .productLink:hover{

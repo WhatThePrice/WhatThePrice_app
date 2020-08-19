@@ -9,7 +9,8 @@ class ProductList extends React.Component{
     render() {
         return(
             <div className="listContainer"
-                onClick={this.props.onClick}
+                onMouseEnter={this.props.onHover}
+                onMouseLeave={this.props.offHover}
             >
                 <div className="platformColumn infoColumn">
                     <img 
@@ -20,7 +21,7 @@ class ProductList extends React.Component{
                         height="40"
                     /></div>
                 <div className="nameColumn infoColumn"><p>.{
-                    this.props.name.length === 80 ? this.props.name : this.props.name.substr(0,80)+"..."
+                    this.props.name.length === 80 ? this.props.name : this.props.name.substr(0,90) + "..."
                 }</p></div>
                 <div className="priceColumn infoColumn"><p>RM{this.props.price}</p></div>
                 <div className="linkColumn infoColumn"><a href={`http://${this.props.url}`} target="_blank" rel="noopener noreferrer"><b>BUY NOW</b></a></div>

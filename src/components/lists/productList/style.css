@@ -27,9 +27,16 @@
 .linkColumn{
     grid-column:7/8;
     border-right: 1px solid black;
-    background-color: lightgoldenrodyellow;
+    background-color: #219653;
+}
+.linkColumn a{
+    text-decoration: none;
+    color: white;
 }
 .linkColumn:hover{
     background-color: yellow;
     transform: scale(1.1);
+}
+.linkColumn a:hover{
+    color: black;
 }

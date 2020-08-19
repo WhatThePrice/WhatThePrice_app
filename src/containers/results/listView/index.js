@@ -42,7 +42,6 @@ class ListView extends React.Component{
     }
 
     onItemSelected(id) {
-        console.log("im clicked", id)
         this.setState({selectedItem:id})
     }
 
@@ -62,6 +61,8 @@ class ListView extends React.Component{
                                 .filter((item) => item.id === this.state.selectedItem)
                                 .map((item) => (
                                     <ProductCard 
+                                        key={item.id}
+                                        platform={item.platform}
                                         name={item.name}
                                         brand={item.brand}
                                         image={item.image_url}
@@ -80,7 +81,7 @@ class ListView extends React.Component{
                             {data.length === 0 ? (
                                 <p>no result found</p>
                             ) : (
-                                data.map((item, index) => (
+                                data.sort((a,b) => a.price - b.price).map((item, index) => (
                                     <ProductList
                                         key={item.id}
                                         platform={item.platform}
@@ -90,7 +91,7 @@ class ListView extends React.Component{
                                         price={item.price}
                                         product_id={item.product_id}
                                         url={item.url}
-                                        onClick={() => this.onItemSelected(item.id)}
+                                        onHover={() => this.onItemSelected(item.id)}
                                     />
                                 ))) 
                             }
