@@ -6,6 +6,13 @@ import shopee from "assets/images/logos/shopee_square.png";
 import lazada from "assets/images/logos/lazada_square.png";
 
 class ProductList extends React.Component{
+    showPlatformLogo() {
+        switch(this.props.platform){
+            case "lazada": return lazada;
+            case "shopee": return shopee;
+        }
+    }
+
     render() {
         return(
             <div className="listContainer"
@@ -15,7 +22,8 @@ class ProductList extends React.Component{
                 <div className="platformColumn infoColumn">
                     <img 
                         className="platformLogo" 
-                        src={this.props.platform === "lazada" ? lazada : shopee}
+                        src={this.showPlatformLogo()}
+                        // this.props.platform === "lazada" ? lazada : shopee
                         alt={this.props.platform}
                         width="40"
                         height="40"

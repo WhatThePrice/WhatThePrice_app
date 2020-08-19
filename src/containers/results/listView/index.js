@@ -61,33 +61,31 @@ class ListView extends React.Component{
                     <div>
                         <SearchBar />
                         <div className="container">
-                        {/* <input name="query" onChange={(query) => this.setState({query:query.target.value})}/>
-                        <button onClick={() => this.queryPressed()}>Query</button> */}
-                            <h1 className="queryText">{this.state.query}<span className="querySum">(no of results)</span> </h1>
                             <div className="resultContainer">
-                            <div className="cardHolder">
-                                <div>
-                                    {data.length === 0 ? (
-                                        <ProductCard />
-                                    ) : (
-                                        data
-                                        .filter((item) => item.id === this.state.selectedItem)
-                                        .map((item) => (
-                                            <ProductCard 
-                                                key={item.id}
-                                                platform={item.platform}
-                                                name={item.name}
-                                                brand={item.brand}
-                                                image={item.image_url}
-                                                price={item.price}
-                                                product_id={item.product_id}
-                                                url={item.url}
-                                            />
-                                        ))
-                                    )}
+                                <h1 className="queryText">{this.state.query}<span className="querySum">(no of results)</span> </h1>
+                                <div className="cardHolder">
+                                    <div>
+                                        {data.length === 0 ? (
+                                            <ProductCard />
+                                        ) : (
+                                            data
+                                            .filter((item) => item.id === this.state.selectedItem)
+                                            .map((item) => (
+                                                <ProductCard 
+                                                    key={item.id}
+                                                    platform={item.platform}
+                                                    name={item.name}
+                                                    brand={item.brand}
+                                                    image={item.image_url}
+                                                    price={item.price}
+                                                    product_id={item.product_id}
+                                                    url={item.url}
+                                                />
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="listHolderContainer">
+                                <div className="listHolderContainer">
                                 <h1>Results</h1>
                                 <div className="listHolder">
                                     {data.length === 0 ? (
@@ -109,9 +107,9 @@ class ListView extends React.Component{
                                     }
                         </div>
                     </div>
+                            </div>
                         </div>
                     </div>
-                </div>
                 )}
             </div>
         )

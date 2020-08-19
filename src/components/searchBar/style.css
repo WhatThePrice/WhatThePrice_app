@@ -26,3 +26,15 @@
     width:20%;
     background-color: none;
 }
+
+@keyframes headerIn{
+    0%{transform:translate(0, 300px)}
+    100%{transform:translate(0,0)}
+}
+
+@keyframes inputToLeft{
+    0%{transform:translate(200px,0)}
+    100%{transform:translate(0,0)}
+}
+
+

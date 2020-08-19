@@ -12,17 +12,20 @@ class SearchBar extends React.Component{
                     marginTop:this.props.noQuery && "100px",
                     backgroundColor: this.props.noQuery && "transparent",
                     alignItems:this.props.noQuery && "center",
+                    animation:!this.props.noQuery && "headerIn 1s linear"
                 }}
             >
                 {this.props.noQuery && 
                     <h1 className="webTitle">WhatThePrice</h1>
                 }
-                <div className="inputHolder">
+                <div className="inputHolder" style={{animation:!this.props.noQuery && "inputToLeft 1s linear"}}>
                     <input 
                         name="query"
                         className="searchInput"
                         onChange={this.props.onChange}
-                        style={{margin: this.props.noQuery && "0 auto"}}
+                        style={{
+                            margin: this.props.noQuery && "0 auto",
+                        }}
                     />
                     <button 
                         className="searchButton"

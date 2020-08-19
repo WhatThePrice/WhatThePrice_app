@@ -6,6 +6,8 @@
     display: grid;
     grid-column-gap: 50px;
     margin-top:20px;
+    animation-name: resultIn;
+    animation-duration: 2s;
 }
 .cardHolder{
     /* background-color: tomato; */
@@ -21,4 +23,9 @@
     scroll-behavior: smooth;
     overflow: scroll;
     display: grid;
+}
+
+@keyframes resultIn{
+    0%{transform:translate(0,300px)}
+    100%{transform:translate(0,0)}
 }
