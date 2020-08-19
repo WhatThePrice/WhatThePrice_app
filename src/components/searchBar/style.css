@@ -11,20 +11,22 @@
 }
 .inputHolder{
     width: 400px;
+    height: 40px;
     margin: 0 20px;
     border: 1px solid black;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
     display: flex;
 }
 .searchInput{
     width: 80%;
-    height:40px;
     padding:10px;
+    border: none;
 }
 .searchButton{
     width:20%;
-    background-color: none;
+    background-color: white;
+    border: none;
 }
 
 @keyframes headerIn{

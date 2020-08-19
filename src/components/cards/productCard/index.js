@@ -10,6 +10,7 @@ class ProductCard extends React.Component{
         switch(this.props.platform){
             case "lazada": return lazada;
             case "shopee": return shopee;
+            default : return shopee;
         }
     }
 

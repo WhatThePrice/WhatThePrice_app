@@ -30,7 +30,7 @@ class SearchBar extends React.Component{
                     <button 
                         className="searchButton"
                         onClick={this.props.onClick}
-                    ><i class="fa fa-search" aria-hidden="true"></i></button>
+                    ><i className="fa fa-search"></i></button>
                 </div>
             </div>
         )

@@ -8,10 +8,10 @@ import "./style.css"
 //Components
 import SearchBar from "components/searchBar";
 import ProductCard from "components/cards/productCard";
-import ProductList from "components/lists/productList"
+import ProductList from "components/lists/productList";
 
 // Data
-import data from "assets/dummyData"
+import dummyData from "assets/dummyData";
 
 class ListView extends React.Component{
     constructor(props){
@@ -21,6 +21,7 @@ class ListView extends React.Component{
             queryCalled:false,
             userID: "1",
             results:[],
+            countResults:0, 
             selectedItem:0
         }
     }
@@ -30,14 +31,18 @@ class ListView extends React.Component{
         if (prevProps.getResultData.isLoading && !getResultData.isLoading){
             console.log(getResultData.data)
             if (getResultData.data.status_code === "200") { 
-                this.setState({results:getResultData.data.data})
+                this.setState({
+                    results:getResultData.data.data,
+                    countResults:getResultData.data.analytics[0].result_count,
+                    
+                }, () => console.log(this.state.countResults, getResultData.data.analytics[0].result_count))
             }
         }
     }
 
     queryPressed() {
         const data = {
-            queryText:this.state.queryText,
+            query:this.state.queryText,
             userID:this.state.userID
         }
         this.props.onResult(data)
@@ -59,16 +64,20 @@ class ListView extends React.Component{
                     />
                 ) : (
                     <div>
-                        <SearchBar />
+                        <SearchBar 
+                            onChange={(queryText) => this.setState({queryText:queryText.target.value})}
+                            noQuery={!this.state.queryCalled}
+                            onClick={() => this.queryPressed()}
+                        />
                         <div className="container">
                             <div className="resultContainer">
-                                <h1 className="queryText">{this.state.query}<span className="querySum">(no of results)</span> </h1>
+                            <h2 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span></h2>
                                 <div className="cardHolder">
                                     <div>
-                                        {data.length === 0 ? (
+                                        {dummyData.length === 0 ? (
                                             <ProductCard />
                                         ) : (
-                                            data
+                                            dummyData
                                             .filter((item) => item.id === this.state.selectedItem)
                                             .map((item) => (
                                                 <ProductCard 
@@ -86,23 +95,25 @@ class ListView extends React.Component{
                                     </div>
                                 </div>
                                 <div className="listHolderContainer">
-                                <h1>Results</h1>
+                                <h3>Results</h3>
                                 <div className="listHolder">
-                                    {data.length === 0 ? (
+                                    {dummyData.length === 0 ? (
                                         <p>no result found</p>
                                     ) : (
-                                        data.sort((a,b) => a.price - b.price).map((item, index) => (
-                                            <ProductList
-                                                key={item.id}
-                                                platform={item.platform}
-                                                name={item.name}
-                                                brand={item.brand}
-                                                image={item.image_url}
-                                                price={item.price}
-                                                product_id={item.product_id}
-                                                url={item.url}
-                                                onHover={() => this.onItemSelected(item.id)}
-                                            />
+                                        dummyData
+                                            .sort((a,b) => a.price - b.price)
+                                            .map((item, index) => (
+                                                <ProductList
+                                                    key={item.id}
+                                                    platform={item.platform}
+                                                    name={item.name}
+                                                    brand={item.brand}
+                                                    image={item.image_url}
+                                                    price={item.price}
+                                                    product_id={item.product_id}
+                                                    url={item.url}
+                                                    onHover={() => this.onItemSelected(item.id)}
+                                                />
                                         ))) 
                                     }
                         </div>
