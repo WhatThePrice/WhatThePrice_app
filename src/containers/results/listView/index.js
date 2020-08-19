@@ -6,6 +6,7 @@ import Actions from "actions";
 import "./style.css"
 
 //Components
+import SearchBar from "components/searchBar";
 import ProductCard from "components/cards/productCard";
 import ProductList from "components/lists/productList"
 
@@ -16,7 +17,8 @@ class ListView extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            query: "",
+            queryText: "",
+            queryCalled:false,
             userID: "1",
             results:[],
             selectedItem:0
@@ -35,10 +37,11 @@ class ListView extends React.Component{
 
     queryPressed() {
         const data = {
-            query:this.state.query,
+            queryText:this.state.queryText,
             userID:this.state.userID
         }
         this.props.onResult(data)
+        this.setState({queryCalled:!this.state.queryCalled})
     }
 
     onItemSelected(id) {
@@ -47,57 +50,69 @@ class ListView extends React.Component{
 
     render() {
         return(
-            <div className="container">
-                <input name="query" onChange={(query) => this.setState({query:query.target.value})}/>
-                <button onClick={() => this.queryPressed()}>Query</button>
-                <h1 className="queryText">{this.state.query}<span className="querySum">(no of results)</span> </h1>
-                <div className="resultContainer">
-                    <div className="cardHolder">
-                        <div>
-                            {data.length === 0 ? (
-                                <ProductCard />
-                            ) : (
-                            data
-                                .filter((item) => item.id === this.state.selectedItem)
-                                .map((item) => (
-                                    <ProductCard 
-                                        key={item.id}
-                                        platform={item.platform}
-                                        name={item.name}
-                                        brand={item.brand}
-                                        image={item.image_url}
-                                        price={item.price}
-                                        product_id={item.product_id}
-                                        url={item.url}
-                                    />
-                                ))
-                            )}
-                            
+            <div>
+                {this.state.queryCalled === false ? (
+                    <SearchBar 
+                        onChange={(queryText) => this.setState({queryText:queryText.target.value})}
+                        noQuery={!this.state.queryCalled}
+                        onClick={() => this.queryPressed()}
+                    />
+                ) : (
+                    <div>
+                        <SearchBar />
+                        <div className="container">
+                        {/* <input name="query" onChange={(query) => this.setState({query:query.target.value})}/>
+                        <button onClick={() => this.queryPressed()}>Query</button> */}
+                            <h1 className="queryText">{this.state.query}<span className="querySum">(no of results)</span> </h1>
+                            <div className="resultContainer">
+                            <div className="cardHolder">
+                                <div>
+                                    {data.length === 0 ? (
+                                        <ProductCard />
+                                    ) : (
+                                        data
+                                        .filter((item) => item.id === this.state.selectedItem)
+                                        .map((item) => (
+                                            <ProductCard 
+                                                key={item.id}
+                                                platform={item.platform}
+                                                name={item.name}
+                                                brand={item.brand}
+                                                image={item.image_url}
+                                                price={item.price}
+                                                product_id={item.product_id}
+                                                url={item.url}
+                                            />
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                            <div className="listHolderContainer">
+                                <h1>Results</h1>
+                                <div className="listHolder">
+                                    {data.length === 0 ? (
+                                        <p>no result found</p>
+                                    ) : (
+                                        data.sort((a,b) => a.price - b.price).map((item, index) => (
+                                            <ProductList
+                                                key={item.id}
+                                                platform={item.platform}
+                                                name={item.name}
+                                                brand={item.brand}
+                                                image={item.image_url}
+                                                price={item.price}
+                                                product_id={item.product_id}
+                                                url={item.url}
+                                                onHover={() => this.onItemSelected(item.id)}
+                                            />
+                                        ))) 
+                                    }
                         </div>
                     </div>
-                    <div className="listHolderContainer">
-                        <h1>Results</h1>
-                        <div className="listHolder">
-                            {data.length === 0 ? (
-                                <p>no result found</p>
-                            ) : (
-                                data.sort((a,b) => a.price - b.price).map((item, index) => (
-                                    <ProductList
-                                        key={item.id}
-                                        platform={item.platform}
-                                        name={item.name}
-                                        brand={item.brand}
-                                        image={item.image_url}
-                                        price={item.price}
-                                        product_id={item.product_id}
-                                        url={item.url}
-                                        onHover={() => this.onItemSelected(item.id)}
-                                    />
-                                ))) 
-                            }
                         </div>
                     </div>
                 </div>
+                )}
             </div>
         )
     }

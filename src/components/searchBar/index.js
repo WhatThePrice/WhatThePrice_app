@@ -1,0 +1,37 @@
+import React from "react";
+
+// Style
+import "./style.css";
+
+class SearchBar extends React.Component{
+    render() {
+        return(
+            <div className="searchBarContainer"
+                style={{
+                    height:this.props.noQuery && "200px",
+                    marginTop:this.props.noQuery && "100px",
+                    backgroundColor: this.props.noQuery && "transparent",
+                    alignItems:this.props.noQuery && "center",
+                }}
+            >
+                {this.props.noQuery && 
+                    <h1 className="webTitle">WhatThePrice</h1>
+                }
+                <div className="inputHolder">
+                    <input 
+                        name="query"
+                        className="searchInput"
+                        onChange={this.props.onChange}
+                        style={{margin: this.props.noQuery && "0 auto"}}
+                    />
+                    <button 
+                        className="searchButton"
+                        onClick={this.props.onClick}
+                    ><i class="fa fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        )
+    }
+}
+
+export default SearchBar;
