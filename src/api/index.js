@@ -5,5 +5,5 @@ export const login = data => {
 };
 
 export const result = data => {
-  return fetchApi("get", "/", data);
+  return fetchApi("get", `?q=${data.query}&user_id=${data.userID}`);
 };

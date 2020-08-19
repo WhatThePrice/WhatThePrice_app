@@ -4,13 +4,16 @@
 }
 .resultContainer{
     display: grid;
+    grid-column-gap: 50px;
     margin-top:20px;
 }
 .cardHolder{
+    /* background-color: tomato; */
     display: grid;
     grid-column:1/2;
 }
 .listHolderContainer{
+    /* background-color: teal; */
     grid-column: 2/6;
 }
 .listHolder{
