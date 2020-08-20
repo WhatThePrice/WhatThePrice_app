@@ -2,6 +2,17 @@ import React from "react";
 import { connect } from "react-redux";
 import Actions from "actions";
 
+// Victory
+import { 
+    VictoryBar,
+    VictoryChart,
+    VictoryAxis,
+    VictoryTheme,
+    VictoryLabel,
+    VictoryTooltip,
+    LineSegment,
+} from 'victory';
+
 //Style
 import "./style.css"
 
@@ -17,12 +28,19 @@ class ListView extends React.Component{
     constructor(props){
         super(props)
         this.state = {
+            // query
             queryText: "",
             queryCalled:false,
-            userID: "1",
+            
+            // user
+            userID: "",
+            
+            // results
             results:[],
             countResults:0, 
-            selectedItem:0
+            selectedItem:0,
+            viewType:"list", //listView by default
+            sorted:true //sort to cheap first by default
         }
     }
 
@@ -40,6 +58,9 @@ class ListView extends React.Component{
         }
     }
 
+    // when 'search' button is pressed, 
+        // save query to state
+        // set querycalled to true
     queryPressed() {
         const data = {
             query:this.state.queryText,
@@ -49,20 +70,33 @@ class ListView extends React.Component{
         this.setState({queryCalled:!this.state.queryCalled})
     }
 
+    // when item selected, set selectedItem to product unique id
     onItemSelected(id) {
         this.setState({selectedItem:id})
+    }
+
+    // to change results view
+    changeView(type) {
+        this.setState({viewType:type})
+    }
+
+    // to sort results
+    sortGraph() {
+        this.setState({sorted:!this.state.sorted})
     }
 
     render() {
         return(
             <div>
                 {this.state.queryCalled === false ? (
+                    // if not query called, show only search bar
                     <SearchBar 
                         onChange={(queryText) => this.setState({queryText:queryText.target.value})}
                         noQuery={!this.state.queryCalled}
                         onClick={() => this.queryPressed()}
                     />
                 ) : (
+                    // if query called, show search bar on top and display results in list by default
                     <div>
                         <SearchBar 
                             onChange={(queryText) => this.setState({queryText:queryText.target.value})}
@@ -71,12 +105,14 @@ class ListView extends React.Component{
                         />
                         <div className="container">
                             <div className="resultContainer">
-                            <h2 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span></h2>
+                            
+                            {/* show queryText and no of result */}
+                            <h3 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span></h3>
+                                
+                                {/* card to show selectedItem */}
                                 <div className="cardHolder">
                                     <div>
-                                        {dummyData.length === 0 ? (
-                                            <ProductCard />
-                                        ) : (
+                                        {dummyData.length === 0 ? (<ProductCard />) : (
                                             dummyData
                                             .filter((item) => item.id === this.state.selectedItem)
                                             .map((item) => (
@@ -94,14 +130,40 @@ class ListView extends React.Component{
                                         )}
                                     </div>
                                 </div>
-                                <div className="listHolderContainer">
-                                <h3>Results</h3>
-                                <div className="listHolder">
-                                    {dummyData.length === 0 ? (
-                                        <p>no result found</p>
-                                    ) : (
+
+                                {/* show all results, listView by default */}
+                                <div className="allResultsContainer">
+
+                                    <div className="allResultsHeader">
+                                        <h3>Results</h3>
+                                        <div className="filterHolder">
+                                            {/* to sort */}
+                                            <p>Sort by</p>
+                                            <button 
+                                            className="sortBtn"
+                                            onClick={() => this.sortGraph()}>{this.state.sorted ? "Expensive first" : "Cheapest first"}
+                                        </button>
+
+                                            {/* view type selector */}
+                                            <div className="selectorBtnHolder">
+                                            <button 
+                                                className="selectorBtn" 
+                                                onClick={() => this.changeView("graph")}
+                                                style={{backgroundColor:this.state.viewType === "graph" && "darkgray"}}
+                                            ><i className="fa fa-signal"></i></button>
+                                            <button 
+                                                className="selectorBtn" 
+                                                onClick={() => this.changeView("list")}
+                                                style={{backgroundColor:this.state.viewType === "list" && "darkgray"}}
+                                            ><i class="fa fa-th-list"></i></button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    {this.state.viewType === "list" && (
+                                        <div className="listHolder">
+                                    {dummyData.length === 0 ? (<p>no result found</p>) : (
                                         dummyData
-                                            .sort((a,b) => a.price - b.price)
+                                            .sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )
                                             .map((item, index) => (
                                                 <ProductList
                                                     key={item.id}
@@ -114,10 +176,42 @@ class ListView extends React.Component{
                                                     url={item.url}
                                                     onHover={() => this.onItemSelected(item.id)}
                                                 />
-                                        ))) 
+                                            ))) 
                                     }
-                        </div>
-                    </div>
+                                </div>
+                                    )}
+                                    {this.state.viewType === "graph" && (
+                                        <div className="graphHolder" >
+                                            <VictoryChart domainPadding={{x:[20,20]}} width={500} >
+                                                <VictoryAxis
+                                                    dependentAxis
+                                                    label="Price"
+                                                    axisComponent={<LineSegment style={{fontSize:"1"}}/>}
+                                                    axisLabelComponent={<VictoryLabel style={{fontSize:"20"}} dy={-100} dx={25} angle={360}/>}
+                                                    tickLabelComponent={<VictoryLabel style={{fontSize:"10"}}/>}
+                                                    tickFormat={(y) => `RM${y}`}
+                                                />
+                                                <VictoryBar
+                                                    data={dummyData.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
+                                                    y={"price"}
+                                                    style={{ data:{fill: "#219653"} }}
+                                                    barRatio={0.8}
+                                                    alignment="start"
+                                                    labels={({datum}) => `RM${datum.price} from ${datum.platform}`}
+                                                    labelComponent={<VictoryTooltip 
+                                                        style={{fontSize:"10"}}
+                                                        pointerLength={5}
+                                                        />
+                                                    }
+                                                    animate={{
+                                                        duration: 2000,
+                                                        onLoad: { duration: 1000 }
+                                                    }}
+                                                />
+                                            </VictoryChart>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -5,9 +5,10 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { store, persistor } from "./store/index";
 
-import Header from "./components/header";
-import Home from "./containers/home";
-import ListView from "./containers/results/listView";
+import Header from "components/header";
+import Home from "containers/home";
+import ListView from "containers/results/listView";
+import GraphView from "containers/results/graphView";
 
 // import Login from "./containers/auth/Login";
 
@@ -26,6 +27,7 @@ function App() {
           <Switch>
             <Route exact path="/home" component={Home} />
             <Route exact path="/" component={ListView} />
+            <Route exact path="/result/graph" component={GraphView} />
           </Switch>
         </Router>
       </PersistGate>
