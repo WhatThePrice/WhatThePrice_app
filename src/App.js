@@ -27,10 +27,10 @@ function App() {
         <Router>
           <Header />
           <Switch>
+            <Route exact path="/" component={ListView} />
+            <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/home" component={Home} />
-            <Route exact path="/result/list" component={ListView} />
             <Route exact path="/result/graph" component={GraphView} />
-            <Route exact path="/" component={Dashboard} />
           </Switch>
         </Router>
       </PersistGate>
