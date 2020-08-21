@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.css";
+import "./productList.css";
 
 // images
 import shopee from "assets/images/logos/shopee_square.png";

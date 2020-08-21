@@ -3,7 +3,6 @@ import {
     VictoryBar,
     VictoryChart,
     VictoryAxis,
-    VictoryTheme,
     VictoryLabel,
     VictoryTooltip,
     LineSegment,

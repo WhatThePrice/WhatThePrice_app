@@ -9,6 +9,7 @@ import Header from "components/header";
 import Home from "containers/home";
 import ListView from "containers/results/listView";
 import GraphView from "containers/results/graphView";
+import Dashboard from "containers/dashboard";
 
 // import Login from "./containers/auth/Login";
 
@@ -18,6 +19,7 @@ import {
   Switch,
 } from "react-router-dom";
 
+
 function App() {
   return (
     <Provider store={store}>
@@ -26,8 +28,9 @@ function App() {
           <Header />
           <Switch>
             <Route exact path="/home" component={Home} />
-            <Route exact path="/" component={ListView} />
+            <Route exact path="/result/list" component={ListView} />
             <Route exact path="/result/graph" component={GraphView} />
+            <Route exact path="/" component={Dashboard} />
           </Switch>
         </Router>
       </PersistGate>
