@@ -18,7 +18,6 @@ class ProductList extends React.Component{
         return(
             <div className="listContainer"
                 onMouseEnter={this.props.onHover}
-                onMouseLeave={this.props.offHover}
             >
                 <div className="platformColumn infoColumn">
                     <img 

@@ -155,7 +155,7 @@ class ListView extends React.Component{
                                                 className="selectorBtn" 
                                                 onClick={() => this.changeView("list")}
                                                 style={{backgroundColor:this.state.viewType === "list" && "darkgray"}}
-                                            ><i class="fa fa-th-list"></i></button>
+                                            ><i className="fa fa-th-list"></i></button>
                                         </div>
                                         </div>
                                     </div>
@@ -197,16 +197,27 @@ class ListView extends React.Component{
                                                     style={{ data:{fill: "#219653"} }}
                                                     barRatio={0.8}
                                                     alignment="start"
+                                                    animate={{duration: 2000, onLoad: { duration: 1000 }}}
                                                     labels={({datum}) => `RM${datum.price} from ${datum.platform}`}
-                                                    labelComponent={<VictoryTooltip 
+                                                    labelComponent={
+                                                    <VictoryTooltip 
                                                         style={{fontSize:"10"}}
-                                                        pointerLength={5}
-                                                        />
+                                                        pointerLength={5} />
                                                     }
-                                                    animate={{
-                                                        duration: 2000,
-                                                        onLoad: { duration: 1000 }
-                                                    }}
+                                                    events={[{
+                                                        target:"data",
+                                                        eventHandlers:{
+                                                            onMouseEnter:() => {
+                                                                return[{
+                                                                    target:"data",
+                                                                    mutation:(props) => {
+                                                                        const fill = props.style && props.style.fill;
+                                                                        return fill === "#219653" ? null : {style: {fill:"#219653"}}
+                                                                    }
+                                                                }]
+                                                            }
+                                                        }
+                                                    }]}
                                                 />
                                             </VictoryChart>
                                         </div>
