@@ -26,8 +26,13 @@ class Header extends React.Component{
                         <li onClick={() => this.setState({showLogin:!this.state.showLogin})}><i className="fa fa-user" aria-hidden="true"></i>Login</li>
                     </ul>
                 </div>
+                {this.state.showLogin && 
+                    <Login
+                        showBox={this.state.showLogin}
+                        onHideBox={() => this.setState({showLogin:!this.state.showLogin})}
+                    />
+                }
             </div> 
-
         )
     }
 }

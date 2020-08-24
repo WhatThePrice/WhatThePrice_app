@@ -4,11 +4,18 @@ import "./login.css";
 import { Link } from "react-router-dom";
 
 class Login extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
     render() {
         return(
-            <div className="loginContainer" >
+            <div className="loginContainer" style={{animation: this.props.showBox && "loginBoxIn 1s linear"}}>
+                <div className="loginHeader">
+                    <p>Start tracking your favourite item</p>
+                    <p onClick={this.props.onHideBox}><i className="fa fa-times"></i></p>
+                </div>
                 <h1 className="loginTitle">Sign In</h1>
-                <p>Start tracking your favourite item</p>
                 <div className="loginInputHolder">
                     <label htmlFor="email">Email</label>
                     <input name="email" placeholder="email" />

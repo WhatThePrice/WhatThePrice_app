@@ -5,10 +5,15 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
-    position: absolute;
+    position: fixed;
     right:0;
+    bottom: 0;
     z-index: 1001;
     background-color:gray;
+}
+.loginHeader{
+    display: flex;
+    justify-content: space-between;
 }
 .loginTitle{
     font-size: 60px;
@@ -37,4 +42,14 @@ button{
 label{
     margin-bottom: 5px;
     font-weight: bold;
+}
+
+@keyframes loginBoxIn {
+    0%{transform: translateX(200px)}
+    100%{transform: translateX(0px);}
+}
+
+@keyframes loginBoxOut {
+    0%{transform: translateX(0px)}
+    100%{transform: translateX(200px);}
 }
