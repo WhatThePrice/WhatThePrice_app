@@ -13,15 +13,17 @@ export const getHeader = () => {
   };
 };
 
-const getFullUrl = endpoint => {
-  return "https://api-sandbox-286406.et.r.appspot.com/api/v1/data"  + endpoint;
-};
+// const getFullUrl = (endpoint) => {
+//   return "https://api-sandbox-286406.et.r.appspot.com/api/v1/data"  + endpoint;
+// };
 
-const fetchApi = (method, endpoint, params, headers) =>
+
+const fetchApi = (method, fullUrl, endpoint, params, headers) =>
   axios({
     method,
     headers: headers || getHeader(),
-    url: getFullUrl(endpoint),
+    url: fullUrl + endpoint,
+    // url: getFullUrl(endpoint),
     data: params
   })
     .then(response => ({ response }))

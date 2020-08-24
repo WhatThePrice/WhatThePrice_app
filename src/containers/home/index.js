@@ -1,11 +1,12 @@
 import React from "react";
+import Login from "components/login";
 
 
 class Home extends React.Component{
     render() {
         return(
             <div>
-                <h1>This is home screen</h1>
+                <Login />
             </div>
         )
     }

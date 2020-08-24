@@ -1,0 +1,40 @@
+.loginContainer{
+    width:400px;
+    height:100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    position: absolute;
+    right:0;
+    z-index: 1001;
+    background-color:gray;
+}
+.loginTitle{
+    font-size: 60px;
+    color: white;
+}
+.loginInputHolder{
+    display: flex;
+    flex-direction: column;
+}
+.rememberPwdHolder{
+    display: flex;
+}
+input, button{
+    height: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+}
+button{
+    width: 150px;
+    background-color: #219653;
+    color: white;
+    font-weight: bold;
+}
+label{
+    margin-bottom: 5px;
+    font-weight: bold;
+}
