@@ -1,0 +1,23 @@
+.registerContainer{
+    width:400px;
+    height: 500px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    z-index: 1001;
+    background-color:gray;
+}
+.registerHeader{
+    display: flex;
+    justify-content: space-between;
+}
+.registerTitle{
+    font-size: 60px;    
+    color: white;
+}
+.registerInputHolder{
+    display: flex;
+    flex-direction: column;
+}

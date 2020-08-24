@@ -31,7 +31,7 @@ class Login extends React.Component{
                     <button>SIGN IN</button>
                     <a><p>forgot username or password?</p></a>
                 </div>
-                <p>Don't have account? Sign up <Link to="/register">here</Link> to start tracking your price</p>
+                <p>Don't have account? Sign up <Link to="/register" onClick={this.props.onHideBox}>here</Link> to start tracking your price</p>
             </div>
         )
     }
