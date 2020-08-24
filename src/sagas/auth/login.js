@@ -2,8 +2,6 @@ import { takeLatest, call, all, fork, put } from "redux-saga/effects";
 import Actions from "../../actions";
 import * as api from "../../api";
 
-// import { encode } from "../../services/encryption";
-
 function* login({ data }) {
   const formData = new FormData();
   formData.append("email", data.email);
@@ -14,10 +12,10 @@ function* login({ data }) {
   console.log(response);
 
   if (response && response.data.status === "success") {
-    yield put(Actions.loginSuccess(response.data.token));
-    yield put(Actions.activateUserSession(response.data.token));
+    yield put(Actions.loginSuccess(response.data));
+    yield put(Actions.activateUserSession(response.data));
   } else if (error) {
-    yield put(Actions.loginFail(error.response));
+    yield put(Actions.loginFail(error));
 }
 }
 

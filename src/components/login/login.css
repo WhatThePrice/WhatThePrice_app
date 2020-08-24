@@ -10,6 +10,7 @@
     bottom: 0;
     z-index: 1001;
     background-color:gray;
+    animation-fill-mode: both;
 }
 .loginHeader{
     display: flex;
@@ -25,16 +26,20 @@
 }
 .rememberPwdHolder{
     display: flex;
+    width: 110px;
+    justify-content: space-between;
+    align-items: center;
 }
-input, button{
+.authInput, .authButton{
     height: 30px;
     padding: 5px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid #219653;
     margin-bottom: 10px;
 }
-button{
+.authButton{
     width: 150px;
+    margin: 10px 0;
     background-color: #219653;
     color: white;
     font-weight: bold;
@@ -43,13 +48,27 @@ label{
     margin-bottom: 5px;
     font-weight: bold;
 }
+.subtitleText{
+    font-size: 10px;
+    font-style: italic;
+}
+
+.active {
+    animation-name: loginBoxIn;
+    animation-duration: 1s;
+}
+
+.hideBox {
+    animation-name:loginBoxOut;
+    animation-duration: 1s;
+}
 
 @keyframes loginBoxIn {
-    0%{transform: translateX(200px)}
+    0%{transform: translateX(400px)}
     100%{transform: translateX(0px);}
 }
 
 @keyframes loginBoxOut {
     0%{transform: translateX(0px)}
-    100%{transform: translateX(200px);}
+    100%{transform: translateX(400px);}
 }

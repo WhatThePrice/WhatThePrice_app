@@ -57,21 +57,24 @@ class Register extends React.Component{
                 <h1 className="registerTitle">Sign Up</h1>
                 <div className="registerInputHolder">
                     <label htmlFor="name">Name</label>
-                    <input 
+                    <input
+                        className="authInput"
                         name="name" 
                         placeholder="name"
                         onChange={(name) => this.setState({name:name.target.value})}
                     />
 
                     <label htmlFor="email">Email</label>
-                    <input 
+                    <input
+                        className="authInput"
                         name="email" 
                         placeholder="email" 
                         onChange={(email) => this.setState({email:email.target.value})}
                     />
 
                     <label htmlFor="password">Password</label>
-                    <input 
+                    <input
+                        className="authInput"
                         type="password" 
                         name="password" 
                         placeholder="password"
@@ -79,7 +82,8 @@ class Register extends React.Component{
                     />
 
                     <label htmlFor="password">Confirm Password</label>
-                    <input 
+                    <input
+                        className="authInput"
                         type="password" 
                         name="password_confirmation" 
                         placeholder="confirm password" 
@@ -87,7 +91,7 @@ class Register extends React.Component{
                     />
                 </div>
 
-                <button onClick={() => this.onRegisterPressed()}>SIGN UP</button>
+                <button className="authButton" onClick={() => this.onRegisterPressed()}>SIGN UP</button>
                 <p>Already registered? Go to <Link to="/">homepage</Link> to sign in</p>
             </div>
         )
