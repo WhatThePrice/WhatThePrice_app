@@ -5,19 +5,19 @@ import * as api from "../../api";
 // import { encode } from "../../services/encryption";
 
 function* login({ data }) {
-  const formData = new FormData();
-  formData.append("email", data.email);
-  formData.append("password", data.password);
+    const formData = new FormData();
+    formData.append("email", data.email);
+    formData.append("password", data.password);
 
-  const { response , error } = yield call(api.login, formData);
+    const { response , error } = yield call(api.login, formData);
 
-  console.log(response)
+    console.log(response)
 }
 
 function* watchLogin() {
-  yield takeLatest(Actions.LOGIN, login);
+    yield takeLatest(Actions.LOGIN, login);
 }
 
 export default function* submit() {
-  yield all([fork(watchLogin)]);
+    yield all([fork(watchLogin)]);
 }
