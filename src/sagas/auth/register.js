@@ -2,22 +2,30 @@ import { takeLatest, call, all, fork, put } from "redux-saga/effects";
 import Actions from "../../actions";
 import * as api from "../../api";
 
-// import { encode } from "../../services/encryption";
-
-function* login({ data }) {
+function* register({ data }) {
+    console.log("register SAGA")
     const formData = new FormData();
+    formData.append("name", data.name);
     formData.append("email", data.email);
     formData.append("password", data.password);
+    formData.append("password_confirmation", data.password_confirmation);
 
-    const { response , error } = yield call(api.login, formData);
+    const { response , error } = yield call(api.register, formData);
 
-    console.log(response)
+    console.log(response);
+
+    if(response && response.data.status === 'success') {
+        yield put(Actions.registerSuccess(response.data));
+    }
+    if(error) {
+        yield put(Actions.registerFail(error));
+    }
 }
 
-function* watchLogin() {
-    yield takeLatest(Actions.LOGIN, login);
+function* watchRegister() {
+    yield takeLatest(Actions.REGISTER, register);
 }
 
 export default function* submit() {
-    yield all([fork(watchLogin)]);
+    yield all([fork(watchRegister)]);
 }

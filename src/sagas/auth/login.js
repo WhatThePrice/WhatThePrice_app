@@ -11,7 +11,14 @@ function* login({ data }) {
 
   const { response , error } = yield call(api.login, formData);
 
-  console.log(response)
+  console.log(response);
+
+  if (response && response.data.status === "success") {
+    yield put(Actions.loginSuccess(response.data.token));
+    yield put(Actions.activateUserSession(response.data.token));
+  } else if (error) {
+    yield put(Actions.loginFail(error.response));
+}
 }
 
 function* watchLogin() {
