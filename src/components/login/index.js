@@ -42,13 +42,18 @@ class Login extends React.Component{
             if(getLoginData && getLoginData.data.status === "success"){
                 this.setState({
                     isLoading:!this.state.isLoading,
-                    authStatus: "success",
+                    authStatus: "Success",
                     description: "You will redirect to homepage"
                 })
                 //alert("Success");
                 console.log("login success");
             } else if(getLoginData.error) {
-                alert("Failed", "Login failed");
+                this.setState({
+                    isLoading:!this.state.isLoading,
+                    authStatus: "Failed",
+                    description: "Please try again"
+                })
+                //alert("Failed", "Login failed");
             }
         }
     }
@@ -59,7 +64,10 @@ class Login extends React.Component{
             password: this.state.password,
         }
         this.props.onLogin(data);
-        this.setState({showModal:!this.state.showBox})
+        this.setState({
+            showModal:!this.state.showBox,
+            isShowing:!this.state.isShowing
+        })
     }
 
     render() {
