@@ -28,10 +28,10 @@ function App() {
         <Router>
           <Header />
           <Switch>
-            <Route exact path="/" component={ListView} />
+            <Route exact path="/result" component={ListView} />
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/register" component={Register} />
-            <Route exact path="/home" component={Home} />
+            <Route exact path="/" component={Home} />
             <Route exact path="/result/graph" component={GraphView} />
           </Switch>
         </Router>
