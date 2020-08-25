@@ -1,5 +1,4 @@
 import React from "react";
-import Modal from "components/modal";
 
 class Home extends React.Component{
     render() {

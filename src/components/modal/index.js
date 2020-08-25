@@ -28,7 +28,9 @@ class Modal extends React.Component{
                     )}    
                 </div>
                 <div className="modalFooter">
-                    <button onClick={this.props.onClick} className="modalButton">OK</button>
+                    {this.props.showModalButton && 
+                        (<button onClick={this.props.onClick} className="modalButton">OK</button>)
+                    }
                 </div>
             </div>
         )

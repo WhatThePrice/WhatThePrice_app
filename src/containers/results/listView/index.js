@@ -19,6 +19,7 @@ import "./listView.css"
 import SearchBar from "components/searchBar";
 import ProductCard from "components/cards/productCard";
 import ProductList from "components/lists/productList";
+import Modal from "components/modal";
 
 // Data
 // import dummyData from "assets/dummyData";
@@ -39,7 +40,11 @@ class ListView extends React.Component{
             countResults:0, 
             selectedItem:0,
             viewType:"list", //listView by default
-            sorted:true //sort to cheap first by default
+            sorted:true, //sort to cheap first by default
+
+            // query status
+            showModal: false,
+            isLoading: true,    
         }
     }
 
@@ -51,7 +56,7 @@ class ListView extends React.Component{
                 this.setState({
                     results:getResultData.data.data,
                     countResults:getResultData.data.analytics[0].result_count,
-                    
+                    showModal:!this.state.showModal
                 }, () => console.log(this.state.countResults, getResultData.data.analytics[0].result_count))
             }
         }
@@ -66,7 +71,10 @@ class ListView extends React.Component{
             userID:this.state.userID
         }
         this.props.onResult(data)
-        this.setState({queryCalled:!this.state.queryCalled})
+        this.setState({
+            queryCalled:!this.state.queryCalled,
+            showModal:true,
+        })
     }
 
     // when item selected, set selectedItem to product unique id
@@ -87,14 +95,24 @@ class ListView extends React.Component{
     render() {
         return(
             <div>
-                {this.state.queryCalled === false ? (
+                {this.state.queryCalled === false && (
                     // if no query called, show only search bar
                     <SearchBar 
                         onChange={(queryText) => this.setState({queryText:queryText.target.value})}
                         noQuery={!this.state.queryCalled}
                         onClick={() => this.queryPressed()}
                     />
-                ) : (
+                )}
+
+                {this.state.queryCalled && this.state.showModal && (
+                    <Modal 
+                        isLoading={this.state.isLoading}
+                        modalTitle="Scraping live data .."
+                        showModalButton={false}
+                    />
+                )}
+                
+                {this.state.queryCalled && !this.state.showModal && (
                     // if query called, show search bar on top and display results in list by default
                     <div>
                         <SearchBar 
@@ -108,7 +126,6 @@ class ListView extends React.Component{
                             {/* show queryText and no of result */}
                             <h3 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span><button>Track this query</button></h3>
                             
-                                
                                 {/* card to show selectedItem */}
                                 <div className="cardHolder">
                                     <div>

@@ -20,7 +20,7 @@ class Header extends React.Component{
             // user info
             username:"",
 
-             // Auth status
+            // Auth status
             showModal: false,
             isLoading: true,
             authStatus:"" ,
@@ -54,34 +54,36 @@ class Header extends React.Component{
 
     render() {
         return(
-            <div className="headerContainer">
-                <div className="logoHolder">
-                    <Link to="/"><h1><b>WhatThePrice</b></h1></Link>
-                </div>
-                <div>
-                    <ul className="headerMenu">
-                        {this.state.userLoggedIn && <li>Hi {this.state.username}</li>}
-                        <li><Link to="/dashboard"><i className="fa fa-heart"></i>Track</Link></li>
-                        {this.state.userLoggedIn ? (
-                            <li onClick={()=> this.onLogoutPressed()}><i className="fa fa-user"></i>Logout</li>
-                        ) : (
-                            <li onClick={() => this.setState({showLogin:!this.state.showLogin})}><i className="fa fa-user"></i>Login</li>
-                        )}
-                    </ul>
+            <div>
+                <div className="headerContainer">
+                    <div className="logoHolder">
+                        <Link to="/"><h1><b>WhatThePrice</b></h1></Link>
+                    </div>
+                    <div>
+                        <ul className="headerMenu">
+                            {this.state.userLoggedIn && <li>Hi {this.state.username}</li>}
+                            <li><Link to="/dashboard"><i className="fa fa-heart"></i>Track</Link></li>
+                            {this.state.userLoggedIn ? (
+                                <li onClick={()=> this.onLogoutPressed()}><i className="fa fa-user"></i>Logout</li>
+                            ) : (
+                                <li onClick={() => this.setState({showLogin:!this.state.showLogin})}><i className="fa fa-user"></i>Login</li>
+                            )}
+                        </ul>
+                    </div>
                 </div>
                 {this.state.showLogin && 
-                    <Login
-                        showBox={this.state.showLogin}
-                        onHideBox={() => this.setState({showLogin:!this.state.showLogin})}
-                    />
-                }
-                {this.state.showModal && <Modal 
-                    isLoading={this.state.isLoading}
-                    modalTitle="Auth"
-                    status={this.state.authStatus}
-                    description={this.state.description}
-                    onClick={() => window.location = "/"}
-                />}
+                        <Login
+                            showBox={this.state.showLogin}
+                            onHideBox={() => this.setState({showLogin:!this.state.showLogin})}
+                        />
+                    }
+                    {this.state.showModal && <Modal 
+                        isLoading={this.state.isLoading}
+                        modalTitle="Auth"
+                        status={this.state.authStatus}
+                        description={this.state.description}
+                        onClick={() => window.location = "/"}
+                    />}
             </div> 
         )
     }

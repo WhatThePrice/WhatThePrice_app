@@ -115,6 +115,7 @@ class Login extends React.Component{
                     modalTitle="Auth"
                     status={this.state.authStatus}
                     description={this.state.description}
+                    showModalButton="true"
                     onClick={() => window.location = "/"}
                 />}
             </div>
