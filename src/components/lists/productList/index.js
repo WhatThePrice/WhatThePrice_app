@@ -31,7 +31,11 @@ class ProductList extends React.Component{
                     this.props.name.length === 80 ? this.props.name : this.props.name.substr(0,80) + "..."
                 }</p></div>
                 <div className="priceColumn infoColumn"><p>RM{this.props.price}</p></div>
-                <div className="linkColumn infoColumn"><a href={`http://${this.props.url}`} target="_blank" rel="noopener noreferrer"><b>BUY NOW</b></a></div>
+                <div className="linkColumn infoColumn">
+                    <div className="buyButton">
+                        <a href={`http://${this.props.url}`} target="_blank" rel="noopener noreferrer"><b>BUY NOW</b></a>
+                    </div>
+                </div>
             </div>
         )
     }

@@ -19,7 +19,7 @@ class Modal extends React.Component{
                 </div>
                 <div className="modalContentHolder">
                     {this.props.isLoading ? (
-                        <Spinner color="success" className="loadingEffect" />
+                        <Spinner color="success" className="loadingEffect" type={this.props.type}/>
                     ) : (
                         <div>
                             <h2>{this.props.status}</h2>

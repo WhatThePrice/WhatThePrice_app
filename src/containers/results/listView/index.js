@@ -22,7 +22,7 @@ import ProductList from "components/lists/productList";
 import Modal from "components/modal";
 
 // Data
-// import dummyData from "assets/dummyData";
+import dummyData from "assets/dummyData";
 
 class ListView extends React.Component{
     constructor(props){
@@ -104,15 +104,17 @@ class ListView extends React.Component{
                     />
                 )}
 
-                {this.state.queryCalled && this.state.showModal && (
+                {/* {this.state.queryCalled && this.state.showModal && (
                     <Modal 
                         isLoading={this.state.isLoading}
                         modalTitle="Scraping live data .."
                         showModalButton={false}
+                        type="grow"
                     />
-                )}
+                )} */}
                 
-                {this.state.queryCalled && !this.state.showModal && (
+                {/* && !this.state.showModal */}
+                {this.state.queryCalled  && (
                     // if query called, show search bar on top and display results in list by default
                     <div>
                         <SearchBar 
@@ -121,16 +123,19 @@ class ListView extends React.Component{
                             onClick={() => this.queryPressed()}
                         />
                         <div className="container">
-                            <div className="resultContainer">
-                            
+
                             {/* show queryText and no of result */}
-                            <h3 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span><button>Track this query</button></h3>
-                            
+                            <div className="trackerHolder">
+                                <h3 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span></h3>
+                                <button className="trackButton">Track this query</button>
+                            </div>
+
+                            <div className="resultContainer">
                                 {/* card to show selectedItem */}
                                 <div className="cardHolder">
                                     <div>
-                                        {this.state.results.length === 0 ? (<ProductCard />) : (
-                                            this.state.results
+                                        {dummyData.length === 0 ? (<ProductCard />) : (
+                                            dummyData
                                             .filter((item) => item.id === this.state.selectedItem)
                                             .map((item) => (
                                                 <ProductCard 
@@ -157,9 +162,9 @@ class ListView extends React.Component{
                                             {/* to sort */}
                                             <p>Sort by</p>
                                             <button 
-                                            className="sortBtn"
-                                            onClick={() => this.sortGraph()}>{this.state.sorted ? "Expensive first" : "Cheapest first"}
-                                        </button>
+                                                className="sortBtn"
+                                                onClick={() => this.sortGraph()}>{this.state.sorted ? "Expensive first" : "Cheapest first"}
+                                            </button>
 
                                             {/* view type selector */}
                                             <div className="selectorBtnHolder">
@@ -178,8 +183,8 @@ class ListView extends React.Component{
                                     </div>
                                     {this.state.viewType === "list" && (
                                         <div className="listHolder">
-                                    {this.state.results.length === 0 ? (<p>no result found</p>) : (
-                                        this.state.results
+                                    {dummyData.length === 0 ? (<p>no result found</p>) : (
+                                        dummyData
                                             .sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )
                                             .map((item, index) => (
                                                 <ProductList
@@ -209,7 +214,7 @@ class ListView extends React.Component{
                                                     tickFormat={(y) => `RM${y}`}
                                                 />
                                                 <VictoryBar
-                                                    data={this.state.results.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
+                                                    data={dummyData.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
                                                     y={"price"}
                                                     style={{ data:{fill: "#219653"} }}
                                                     barRatio={0.8}
