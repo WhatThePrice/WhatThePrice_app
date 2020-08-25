@@ -1,51 +1,79 @@
 import fetchApi from "./helper";
 
 // AUTH API
-const authAPI = "https://laravel-sandbox-whattheprice.herokuapp.com/api";
+const url = "https://laravel-sandbox-whattheprice.herokuapp.com/api";
 
 // to login
 export const login = data => {
-  return fetchApi("post", authAPI, "/login", data);
+  return fetchApi("post", url, "/login", data);
 };
 
 // to register
 export const register = data => {
-  return fetchApi("post", authAPI, "/register", data);
+  return fetchApi("post", url, "/register", data);
 };
 
 // get user profile
-export const getUserData = data => {
-  return fetchApi("get", authAPI, "/getprofile", data);
+export const getUser = data => {
+  return fetchApi("get", url, "/profile", data);
 };
 
-// edit user profile
-export const updateUserData = data => {
-  return fetchApi("post", authAPI, "/profile", data);
+// update user profile
+export const updateUser = data => {
+  return fetchApi("post", url, "/profile/update", data);
+};
+
+// upgrade user type
+export const upgradeUser = token => {
+  return fetchApi("get", url, "/user/upgrade", token);
+};
+
+// downgrade user type
+export const downgradeUser = token => {
+  return fetchApi("get", url, "/user/downgrade", token);
 };
 
 
-// change user type
-export const changeUserType = data => {
-  return fetchApi("post", authAPI, "/usertype", data);
+// TRACK API
+const authAPI = "https://laravel-sandbox-whattheprice.herokuapp.com/api";
+
+// save query to track
+export const saveQuery = (data, token) => {
+  return fetchApi("post", url, "/tracker/query/save", data, token);
+};
+
+// save product to track
+export const saveProduct = (data, token) => {
+  return fetchApi("post", url, "/tracker/product/save", data, token);
+};
+
+// cancel tracking query
+export const cancelQuery = (data, token) => {
+  return fetchApi("post", url, "/tracker/query/cancel", data, token);
+};
+
+// cancel tracking product
+export const cancelProduct = (data, token) => {
+  return fetchApi("post", url, "/tracker/product/cancel", data, token);
+};
+
+// get tracking data
+export const getQueryData = (data, token) => {
+  return fetchApi("get", url, "/price/query/list", data, token);
+};
+
+// get tracking data
+export const getProductData = (data, token) => {
+  return fetchApi("get", url, "/price/product/list", data, token);
 };
 
 
 // QUERY API
-const queryAPI = "https://api-sandbox-286406.et.r.appspot.com/api/v1/data";
+const queryAPI = "https://api-sandbox-286406.et.r.appspot.com/api";
 
 // call query
 export const result = data => {
-  return fetchApi("get", queryAPI, `?q=${data.query}&user_id=${data.userID}`);
-};
-
-// save query to track
-export const startTrack = (data, token) => {
-  return fetchApi("post", queryAPI, "/querytracker", data, token);
-};
-
-// cancel tracking query
-export const cancelTrack = (data, token) => {
-  return fetchApi("post", queryAPI, "/cancelqtracker", data, token);
+  return fetchApi("get", queryAPI, `/scraper/query?q=${data.query}&user_id=${data.userID}`);
 };
 
 
