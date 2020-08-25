@@ -88,7 +88,7 @@ class ListView extends React.Component{
         return(
             <div>
                 {this.state.queryCalled === false ? (
-                    // if not query called, show only search bar
+                    // if no query called, show only search bar
                     <SearchBar 
                         onChange={(queryText) => this.setState({queryText:queryText.target.value})}
                         noQuery={!this.state.queryCalled}
@@ -106,7 +106,8 @@ class ListView extends React.Component{
                             <div className="resultContainer">
                             
                             {/* show queryText and no of result */}
-                            <h3 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span></h3>
+                            <h3 className="queryText">{this.state.queryText}<span className="querySum"> ({this.state.countResults} results)</span><button>Track this query</button></h3>
+                            
                                 
                                 {/* card to show selectedItem */}
                                 <div className="cardHolder">

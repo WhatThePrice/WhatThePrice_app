@@ -31,6 +31,7 @@ class Login extends React.Component{
             if(getLoginData && getLoginData.data.status === "success"){
                 alert("Success");
                 console.log("login success");
+                window.location = "/";
             } else if(getLoginData.error) {
                 alert("Failed", "Login failed");
             }

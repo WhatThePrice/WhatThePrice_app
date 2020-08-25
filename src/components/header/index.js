@@ -14,7 +14,7 @@ class Header extends React.Component{
         super(props)
         this.state={
             showLogin:false,
-            userLoggedIn:false,
+            userLoggedIn:false
         }
     }
 
@@ -32,6 +32,7 @@ class Header extends React.Component{
         this.props.onResetUserSession();
         
         alert("logout succsesful");
+        window.location= "/";
     }
 
     render() {
