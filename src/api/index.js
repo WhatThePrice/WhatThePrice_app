@@ -1,6 +1,6 @@
 import fetchApi from "./helper";
 
-// AUTH API
+// AUTH & TRACK API 
 const url = "https://laravel-sandbox-whattheprice.herokuapp.com/api";
 
 // to login
@@ -34,12 +34,9 @@ export const downgradeUser = token => {
 };
 
 
-// TRACK API
-const authAPI = "https://laravel-sandbox-whattheprice.herokuapp.com/api";
-
 // save query to track
-export const saveQuery = (data, token) => {
-  return fetchApi("post", url, "/tracker/query/save", data, token);
+export const saveQuery = (data, headers) => {
+  return fetchApi("post", url, "/tracker/query/save", data, headers);
 };
 
 // save product to track
@@ -69,11 +66,11 @@ export const getProductData = (data, token) => {
 
 
 // QUERY API
-const queryAPI = "https://api-sandbox-286406.et.r.appspot.com/api";
+const queryAPI = "https://api-sandbox-286406.et.r.appspot.com/api/";
 
 // call query
 export const result = data => {
-  return fetchApi("get", queryAPI, `/scraper/query?q=${data.query}&user_id=${data.userID}`);
+  return fetchApi("get", queryAPI, `scraper/query?q=${data.query}&user_id=${data.userID}`);
 };
 
 
