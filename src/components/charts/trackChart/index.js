@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from 'chart.js';
 
-class BarChart extends React.Component{
+class TrackChart extends React.Component{
     constructor(props) {
         super(props);
         this.chartRef = React.createRef();
@@ -20,10 +20,10 @@ class BarChart extends React.Component{
                 }
             },
             data: {
-                labels:this.props.data.map((item) => item.date),
+                labels:this.props.data.map((item) => item.created_at),
                 datasets:[{
                     label: this.props.title,
-                    data: this.props.data.map(item => item.price),
+                    data: this.props.data.map((item) => item.price_analytics),
                     backgroundColor: this.props.color,
                 }]
             }
@@ -40,4 +40,4 @@ class BarChart extends React.Component{
     }
 }
 
-export default BarChart;
+export default TrackChart;

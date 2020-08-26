@@ -6,8 +6,8 @@ import { store } from "store/index";
 import { getStore } from "../../services/encryption";
 
 function* saveQuery({ data }) {
-    // let token = store.getState().PROFILE.userSession.data;
-    let token = data.token;
+    let token = store.getState().PROFILE.userSession.data.token;
+    // let token = data.token;
     const headers = { Authorization : `Bearer ${token}`};
     
     const formData = new FormData();

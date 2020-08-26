@@ -1,22 +1,17 @@
 import { takeLatest, call, all, fork, put } from "redux-saga/effects";
 import Actions from "../../actions";
 import * as api from "../../api";
-
 import { store } from "store/index";
-import { getStore } from "../../services/encryption";
 
-function* getQuery({ data }) {
-    // let token = store.getState().PROFILE.userSession.data;
-    let token = data.token;
+
+function* getQuery() {
+    let token = store.getState().PROFILE.userSession.data.token;
     const headers = { Authorization : `Bearer ${token}`};
     
-    const formData = new FormData();
-    formData.append("query", data.query);
-
-    const { response, error } = yield call(api.getQuery, formData, headers);
+    const { response, error } = yield call(api.getQuery, headers);
     console.log(response, error);
 
-    if (response && response.data.status_code === "200"){
+    if (response && response.data.status === "success"){
         yield put(Actions.getQuerySuccess(response.data))
     }
     if (error) {

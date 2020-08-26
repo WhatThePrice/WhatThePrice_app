@@ -33,7 +33,7 @@ class ListView extends React.Component{
             queryCalled:false,
             
             // user
-            userID: "1",
+            userID: "",
             token: "",
             
             // results
@@ -57,10 +57,13 @@ class ListView extends React.Component{
     }
 
     componentDidMount() {
-        const { getUserSession } = this.props;
+        const { getUserSession } = this.props
         console.log(getUserSession.data)
         if (Object.keys(getUserSession.data).length !== 0){
-            this.setState({token:getUserSession.data.token})
+            this.setState({
+                token:getUserSession.data.token,
+                userID:getUserSession.data.user.id
+            })
         }
     }
 
@@ -152,7 +155,6 @@ class ListView extends React.Component{
     onSaveQueryPressed() {
         const data = {
             query:this.state.queryText,
-            token:this.state.token,
         }
 
         console.log(this.state.token)
@@ -173,7 +175,6 @@ class ListView extends React.Component{
         console.log("this url should be passed", url)
         const data = {
             product_url:`https://${url}`,
-            token:this.state.token,
         }
 
         if (this.state.token === "" ){
