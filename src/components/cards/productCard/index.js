@@ -21,13 +21,17 @@ class ProductCard extends React.Component{
                     <img className="productImg" src={`http://${this.props.image}`} alt="products"/>
                 </div>
                 <div className="productNameHolder">
-                    <p className="productName">{this.props.name}</p>
-                    <i className="fa fa-heart"></i>
+                    <p className="productName">{this.props.name}Samsung Galaxy A11 (3GB RAM + 32GB ROM) Smartphone ,1 Year Samsung Malaysia Warranty , Free Shipping</p>
                 </div>
                 <div className="productInfoHolder" >
                     <ul className="productInfoList">
+                        <li className="productTrackHolder">
+                            <button onClick={this.props.onTrackBtnClick} className="productTrackBtn" data-toggle="tooltip" title="Track this product">
+                                <b>TRACK THIS PRODUCT</b><i className="fa fa-heart"></i>
+                            </button>
+                        </li>
                         <li className="productPrice">RM{this.props.price}</li>
-                        <li className="productBrand">{this.props.brand}</li>
+                        <li className="productBrand">{this.props.brand}Samsung</li>
                         <li className="productPlatform">
                             <img 
                                 className="platformLogo" 

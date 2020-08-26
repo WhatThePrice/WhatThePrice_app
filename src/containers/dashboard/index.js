@@ -17,8 +17,7 @@ class Dashboard extends React.Component{
     }
 
     componentDidMount(){
-        const { getQueryData } = this.props;
-        console.log(getQueryData.data)
+        const { getQuery } = this.props;
     }
 
     render() {
@@ -58,7 +57,7 @@ class Dashboard extends React.Component{
 
 const mapStateToProps = (store) => ({})
 const mapDispatchToProps = {
-    onResult: Actions.getQuery,
+    onGetQuery: Actions.getQuery,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

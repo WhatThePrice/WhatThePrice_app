@@ -5,17 +5,19 @@ import * as api from "../../api";
 import { store } from "store/index";
 
 function* saveProduct({ data }) {
-    // let token = store.getState().PROFILE.userSession.data;
-    let token = data.token;
+    let token = store.getState().PROFILE.userSession.data.token;
+    console.log("token", token);
+
+    // let token = data.token;
     const headers = { Authorization : `Bearer ${token}`};
     
     const formData = new FormData();
-    formData.append("query", data.query);
+    formData.append("product_url", data.product_url);
 
     const { response, error } = yield call(api.saveProduct, formData, headers);
     console.log(response, error);
 
-    if (response && response.data.status_code === "200"){
+    if (response && response.data.status === "success"){
         yield put(Actions.saveProductSuccess(response.data))
     }
     if (error) {

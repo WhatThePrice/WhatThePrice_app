@@ -50,7 +50,9 @@ class ListView extends React.Component{
             modalTitle:"",
             modalDescription:"",
             showModalButton:false,
-            isQuerying: true,    
+            isQuerying: true,   
+            modalType: "grow", 
+            modalOnClickHandler:() => this.setState({showModal:false})
         }
     }
 
@@ -63,10 +65,7 @@ class ListView extends React.Component{
     }
 
     componentDidUpdate(prevProps){
-        const { getResultData, getSaveQueryData } = this.props;
-
-        // get user session data
-        // this.setState({token:getUserSession.data.token})
+        const { getResultData, getSaveQueryData, getSaveProductData } = this.props;
         
         // get result
         if (prevProps.getResultData.isLoading && !getResultData.isLoading){
@@ -76,19 +75,21 @@ class ListView extends React.Component{
                 this.setState({
                     results:getResultData.data.data,
                     countResults:getResultData.data.analytics.result_count,
-                    showModal:!this.state.showModal
+                    showModal:false
                 }, () => console.log(this.state.countResults, getResultData.data.analytics.result_count))
             }
 
-            if (getResultData.status_code === 500) {
+            if (getResultData.status_code === 500  || getResultData.error) {
                 this.setState({
                     isQuerying:!this.state.isQuerying,
                     modalDescription:"Scraping Failed",
                     showModalButton:true,
+                    modalOnClickHandler: () => window.location = "/",
                 })
             }
         }
 
+        // to check if save query success
         if (prevProps.getSaveQueryData.isLoading && !getSaveQueryData.isLoading){
             console.log(getSaveQueryData.data)
             if (getSaveQueryData.data.status === "success") { 
@@ -97,6 +98,35 @@ class ListView extends React.Component{
                     isQuerying:!this.state.isQuerying,
                     modalDescription:"Your query is saved",
                     showModalButton:true,
+                })
+            }
+            if (getSaveQueryData.error) {
+                this.setState({
+                    isQuerying:!this.state.isQuerying,
+                    modalDescription:"Tracking Failed",
+                    showModalButton:true,
+                    modalOnClickHandler: () => window.location = "/",
+                })
+            }
+        }
+
+        // to check if save product success
+        if (prevProps.getSaveProductData.isLoading && !getSaveProductData.isLoading){
+            console.log(getSaveProductData.data)
+            if (getSaveProductData.data.status === "success") { 
+                console.log("tracking success")
+                this.setState({
+                    isQuerying:!this.state.isQuerying,
+                    modalDescription:"Your product is saved",
+                    showModalButton:true,
+                })
+            }
+            if (getSaveProductData.error) {
+                this.setState({
+                    isQuerying:!this.state.isQuerying,
+                    modalDescription:"Tracking Failed",
+                    showModalButton:true,
+                    modalOnClickHandler: () => window.location = "/",
                 })
             }
         }
@@ -114,7 +144,8 @@ class ListView extends React.Component{
         this.setState({
             queryCalled:!this.state.queryCalled,
             showModal:true,
-            modalTitle:"Scraping live data .."
+            modalTitle:"Scraping live data ..",
+            modalType:"grow"
         })
     }
 
@@ -132,10 +163,30 @@ class ListView extends React.Component{
             this.setState({
                 showModal:true,
                 modalTitle:"Track",
+                modalType:""
             })
-            console.log("item tracked")
+            console.log("query tracked")
         }
-        
+    }
+
+    onSaveProductPressed(url){
+        console.log("this url should be passed", url)
+        const data = {
+            product_url:`https://${url}`,
+            token:this.state.token,
+        }
+
+        if (this.state.token === "" ){
+            alert("You're not login. Please sign in to continue")
+        } else {
+            this.props.onSaveProduct(data);
+            this.setState({
+                showModal:true,
+                modalTitle:"Track",
+                modalType:"",
+            })
+            console.log("product tracked")
+        }
     }
 
     // when item selected, set selectedItem to product unique id
@@ -165,20 +216,20 @@ class ListView extends React.Component{
                     />
                 )}
 
-                {this.state.queryCalled && this.state.showModal && (
+                {/* {this.state.queryCalled && this.state.showModal && (
                     <Modal 
                         isLoading={this.state.isQuerying}
                         modalTitle={this.state.modalTitle}
                         showModalButton={this.state.showModalButton}
                         description={this.state.modalDescription}
-                        type="grow"
-                        onClick={() => this.setState({showModal:false})}
+                        type={this.state.modalType}
+                        onClick={this.state.modalOnClickHandler}
                     />
-                )}
-                
+                )} */}
+
                 {/* && !this.state.showModal */}
 
-                {this.state.queryCalled  && (
+                {this.state.queryCalled && (
                     // if query called, show search bar on top and display results in list by default
                     <div>
                         <SearchBar 
@@ -211,6 +262,7 @@ class ListView extends React.Component{
                                                     price={item.price}
                                                     product_id={item.product_id}
                                                     url={item.url}
+                                                    onTrackBtnClick={() => this.onSaveProductPressed(item.url)}
                                                 />
                                             ))
                                         )}
@@ -319,13 +371,15 @@ class ListView extends React.Component{
 }
 
 const mapStateToProps = (store) => ({
+    getUserSession: Actions.getUserSession(store),
     getResultData: Actions.getResultData(store),
     getSaveQueryData: Actions.getSaveQueryData(store),
-    getUserSession: Actions.getUserSession(store)
+    getSaveProductData:Actions.getSaveProductData(store),
 })
 const mapDispatchToProps = {
     onResult:Actions.result,
     onSaveQuery:Actions.saveQuery,
+    onSaveProduct:Actions.saveProduct,
 }
 
 export default connect( mapStateToProps , mapDispatchToProps )(ListView)
