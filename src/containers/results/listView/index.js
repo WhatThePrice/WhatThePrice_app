@@ -22,7 +22,7 @@ import ProductList from "components/lists/productList";
 import Modal from "components/modal";
 
 // Data
-// import dummyData from "assets/dummyData";
+import dummyData from "assets/dummyData";
 
 class ListView extends React.Component{
     constructor(props){
@@ -57,17 +57,22 @@ class ListView extends React.Component{
     componentDidMount() {
         const { getUserSession } = this.props;
         console.log(getUserSession.data)
-        this.setState({token:getUserSession.data.token})
+        if (Object.keys(getUserSession.data).length !== 0){
+            this.setState({token:getUserSession.data.token})
+        }
     }
 
     componentDidUpdate(prevProps){
         const { getResultData, getSaveQueryData } = this.props;
+
+        // get user session data
+        // this.setState({token:getUserSession.data.token})
         
         // get result
         if (prevProps.getResultData.isLoading && !getResultData.isLoading){
             console.log(getResultData.data.data)
             if (getResultData.data.status_code === 200) { 
-                console.log("scraping success")
+                console.log("Scraping success")
                 this.setState({
                     results:getResultData.data.data,
                     countResults:getResultData.data.analytics.result_count,
@@ -77,17 +82,19 @@ class ListView extends React.Component{
 
             if (getResultData.status_code === 500) {
                 this.setState({
-                    modalTitle: "Scraping Failed",
                     isQuerying:!this.state.isQuerying,
+                    modalDescription:"Scraping Failed",
+                    showModalButton:true,
                 })
             }
         }
 
         if (prevProps.getSaveQueryData.isLoading && !getSaveQueryData.isLoading){
             console.log(getSaveQueryData.data)
-            if (getSaveQueryData.data.status_code === 200) { 
+            if (getSaveQueryData.data.status === "success") { 
                 console.log("tracking success")
                 this.setState({
+                    isQuerying:!this.state.isQuerying,
                     modalDescription:"Your query is saved",
                     showModalButton:true,
                 })
@@ -116,9 +123,19 @@ class ListView extends React.Component{
             query:this.state.queryText,
             token:this.state.token,
         }
-        this.props.onSaveQuery(data);
-        this.setState({showModal:!this.state.showModal})
-        console.log("item tracked")
+
+        console.log(this.state.token)
+        if (this.state.token === "" ){
+            alert("You're not login. Please sign in to continue")
+        } else {
+            this.props.onSaveQuery(data);
+            this.setState({
+                showModal:true,
+                modalTitle:"Track",
+            })
+            console.log("item tracked")
+        }
+        
     }
 
     // when item selected, set selectedItem to product unique id
@@ -155,10 +172,13 @@ class ListView extends React.Component{
                         showModalButton={this.state.showModalButton}
                         description={this.state.modalDescription}
                         type="grow"
+                        onClick={() => this.setState({showModal:false})}
                     />
                 )}
                 
-                {this.state.queryCalled  && !this.state.showModal && (
+                {/* && !this.state.showModal */}
+
+                {this.state.queryCalled  && (
                     // if query called, show search bar on top and display results in list by default
                     <div>
                         <SearchBar 
@@ -178,8 +198,8 @@ class ListView extends React.Component{
                                 {/* card to show selectedItem */}
                                 <div className="cardHolder">
                                     <div>
-                                        {this.state.results.length === 0 ? (<ProductCard />) : (
-                                            this.state.results
+                                        {dummyData.length === 0 ? (<ProductCard />) : (
+                                            dummyData
                                             .filter((item) => item.id === this.state.selectedItem)
                                             .map((item) => (
                                                 <ProductCard 
@@ -227,8 +247,8 @@ class ListView extends React.Component{
                                     </div>
                                     {this.state.viewType === "list" && (
                                         <div className="listHolder">
-                                    {this.state.results.length === 0 ? (<p>no result found</p>) : (
-                                        this.state.results
+                                    {dummyData.length === 0 ? (<p>no result found</p>) : (
+                                        dummyData
                                             .sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )
                                             .map((item, index) => (
                                                 <ProductList
@@ -258,7 +278,7 @@ class ListView extends React.Component{
                                                     tickFormat={(y) => `RM${y}`}
                                                 />
                                                 <VictoryBar
-                                                    data={this.state.results.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
+                                                    data={dummyData.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
                                                     y={"price"}
                                                     style={{ data:{fill: "#219653"} }}
                                                     barRatio={0.8}

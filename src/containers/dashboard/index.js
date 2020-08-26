@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+import Actions from "actions";
 
 // Components
 import BarChart from "components/charts/barChart";
@@ -10,6 +12,15 @@ import "./dashboard.css";
 import trackData from "assets/trackData";
 
 class Dashboard extends React.Component{
+    constructor(props){
+        super(props)
+    }
+
+    componentDidMount(){
+        const { getQueryData } = this.props;
+        console.log(getQueryData.data)
+    }
+
     render() {
         return(
             <div className="dashboardContainer">
@@ -45,4 +56,9 @@ class Dashboard extends React.Component{
     }
 }
 
-export default Dashboard;
+const mapStateToProps = (store) => ({})
+const mapDispatchToProps = {
+    onResult: Actions.getQuery,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

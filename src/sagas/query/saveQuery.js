@@ -16,7 +16,7 @@ function* saveQuery({ data }) {
     const { response, error } = yield call(api.saveQuery, formData, headers);
     console.log(response, error);
 
-    if (response && response.data.status_code === "200"){
+    if (response && response.data.status === "success"){
         yield put(Actions.saveQuerySuccess(response.data))
     }
     if (error) {
