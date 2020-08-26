@@ -61,10 +61,10 @@ class Header extends React.Component{
                     </div>
                     <div>
                         <ul className="headerMenu">
-                            {this.state.userLoggedIn && <li>Hi {this.state.username}</li>}
-                            <li><Link to="/dashboard"><i className="fa fa-heart"></i>Track</Link></li>
+                            {this.state.userLoggedIn && <li>Hi <b>{this.state.username}</b></li>}
+                            <li><Link to="/dashboard"><i className="fa fa-line-chart"></i>Track</Link></li>
                             {this.state.userLoggedIn ? (
-                                <li onClick={()=> this.onLogoutPressed()}><i className="fa fa-user"></i>Logout</li>
+                                <li onClick={()=> this.onLogoutPressed()}><i className="fa fa-sign-out" ></i>Logout</li>
                             ) : (
                                 <li onClick={() => this.setState({showLogin:!this.state.showLogin})}><i className="fa fa-user"></i>Login</li>
                             )}
