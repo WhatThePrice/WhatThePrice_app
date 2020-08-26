@@ -11,20 +11,33 @@
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }
-.dashboardUser{
-    width: 200px;
+.profileContainer{
+    padding: 10px;
     display: flex;
-    justify-content: space-around;
+    justify-content: left   ;
     align-items: center;
-    background-color: burlywood;
+}
+.profileContainer ul{
+    list-style-type: none;
+    width: 50%;
+}
+.profileContainer ul li{
+    width: 100px;
+    text-align: justify;
+    background-color: khaki;
+}
+.dashboardContentHolder{
+    display: flex;
 }
 .dashboardSummaryHolder{
     display: flex;
-    justify-content: space-around;
-    padding: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: khaki;
 }
 .summaryCard{
-    height: 140px;
+    height: 100px;
     width: 250px;
     padding: 20px;
     border: 1px solid gray;

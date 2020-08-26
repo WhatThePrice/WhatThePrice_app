@@ -59,8 +59,8 @@ export const getQuery = (token) => {
 };
 
 // get tracking data
-export const getProduct = (data, token) => {
-  return fetchApi("get", url, "/price/product/list", data, token);
+export const getProduct = (token) => {
+  return fetchApi("get", url, "/price/product/list", null, token);
 };
 
 

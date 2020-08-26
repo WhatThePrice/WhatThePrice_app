@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from 'chart.js';
 
-class TrackChart extends React.Component{
+class QueryPriceChart extends React.Component{
     constructor(props) {
         super(props);
         this.chartRef = React.createRef();
@@ -20,14 +20,21 @@ class TrackChart extends React.Component{
                 }
             },
             data: {
-                labels:this.props.data.map((item) => item.created_at),
+                labels:this.props.data.map((item) => item.created_at.substr(0,10)),
                 datasets:[{
                     label: this.props.title,
-                    data: this.props.data.map((item) => item.price_analytics),
+                    data: this.props.data,
+                    parsing:{
+                        xAxisKey:'created_at'
+                    },
                     backgroundColor: this.props.color,
                 }]
             }
         });
+
+        console.log("data", this.props.data)
+        console.log("date", this.props.data.created_at)
+        console.log("price", this.props.data.price_analytics)
     }
 
     render() {
@@ -40,4 +47,4 @@ class TrackChart extends React.Component{
     }
 }
 
-export default TrackChart;
+export default QueryPriceChart;

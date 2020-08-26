@@ -217,7 +217,7 @@ class ListView extends React.Component{
                     />
                 )}
 
-                {/* {this.state.queryCalled && this.state.showModal && (
+                {this.state.queryCalled && this.state.showModal && (
                     <Modal 
                         isLoading={this.state.isQuerying}
                         modalTitle={this.state.modalTitle}
@@ -226,11 +226,11 @@ class ListView extends React.Component{
                         type={this.state.modalType}
                         onClick={this.state.modalOnClickHandler}
                     />
-                )} */}
+                )}
 
-                {/* && !this.state.showModal */}
+                {/*  */}
 
-                {this.state.queryCalled && (
+                {this.state.queryCalled && !this.state.showModal && (
                     // if query called, show search bar on top and display results in list by default
                     <div>
                         <SearchBar 
@@ -250,8 +250,8 @@ class ListView extends React.Component{
                                 {/* card to show selectedItem */}
                                 <div className="cardHolder">
                                     <div>
-                                        {dummyData.length === 0 ? (<ProductCard />) : (
-                                            dummyData
+                                        {this.state.results.length === 0 ? (<ProductCard />) : (
+                                            this.state.results
                                             .filter((item) => item.id === this.state.selectedItem)
                                             .map((item) => (
                                                 <ProductCard 
@@ -300,8 +300,8 @@ class ListView extends React.Component{
                                     </div>
                                     {this.state.viewType === "list" && (
                                         <div className="listHolder">
-                                    {dummyData.length === 0 ? (<p>no result found</p>) : (
-                                        dummyData
+                                    {this.state.results.length === 0 ? (<p>no result found</p>) : (
+                                        this.state.results
                                             .sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )
                                             .map((item, index) => (
                                                 <ProductList
@@ -331,7 +331,7 @@ class ListView extends React.Component{
                                                     tickFormat={(y) => `RM${y}`}
                                                 />
                                                 <VictoryBar
-                                                    data={dummyData.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
+                                                    data={this.state.results.sort((a,b) => this.state.sorted ? a.price - b.price : b.price - a.price )}
                                                     y={"price"}
                                                     style={{ data:{fill: "#219653"} }}
                                                     barRatio={0.8}
