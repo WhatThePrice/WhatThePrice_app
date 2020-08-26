@@ -12,10 +12,7 @@ class ProductPriceChart extends React.Component{
     }
 
     componentDidUpdate(prevProps){
-        console.log("data on update", this.props.data)
-
         if (prevProps.data !== this.props.data){
-            console.log("after compare", this.props.data)
             this.myChart = new Chart(this.chartRef.current, {
                 type: 'line',
                 backgroundColor:this.props.color,

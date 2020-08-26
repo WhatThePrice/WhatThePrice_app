@@ -11,6 +11,14 @@
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }
+.upgradeBtn{
+    width: 200px;
+    border: none;
+    border-radius: 5px;
+    background-color: #219653;
+    color: white;
+    font-weight: bold;
+}
 .profileContainer{
     padding: 10px;
     display: flex;
@@ -21,10 +29,9 @@
     list-style-type: none;
     width: 50%;
 }
-.profileContainer ul li{
+.profileContainer ul li b{
+    display: inline-block;
     width: 100px;
-    text-align: justify;
-    background-color: khaki;
 }
 .dashboardContentHolder{
     display: flex;

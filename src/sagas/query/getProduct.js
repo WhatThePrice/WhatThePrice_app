@@ -9,7 +9,7 @@ function* getProduct() {
     const headers = { Authorization : `Bearer ${token}`};
     
     const { response, error } = yield call(api.getProduct, headers);
-    console.log(response, error);
+    // console.log(response, error);
 
     if (response && response.data.status === "success"){
         yield put(Actions.getProductSuccess(response.data))

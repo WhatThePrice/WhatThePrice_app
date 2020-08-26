@@ -4,23 +4,25 @@ import * as api from "../../api";
 import { store } from "store/index";
 
 
-function* getUser() {
+function* upgrade() {
     let token = store.getState().PROFILE.userSession.data.token;
     const headers = { Authorization : `Bearer ${token}`};
-    const { response, error } = yield call(api.getUser, headers);
+    const { response, error } = yield call(api.upgrade, headers);
+
+    console.log(response, error);
 
     if (response && response.data.status === "success"){
-        yield put(Actions.getUserSuccess(response.data))
+        yield put(Actions.upgradeSuccess(response.data))
     }
     if (error) {
-        yield put(Actions.getUserFail(error))
+        yield put(Actions.upgradeFail(error))
     }
 }
 
-function* watchGetUser() {
-    yield takeLatest(Actions.GET_USER, getUser);
+function* watchUpgrade() {
+    yield takeLatest(Actions.UPGRADE, upgrade);
 }
 
 export default function* submit() {
-    yield all([fork(watchGetUser)]);
+    yield all([fork(watchUpgrade)]);
 }

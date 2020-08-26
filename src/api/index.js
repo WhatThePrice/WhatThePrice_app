@@ -14,8 +14,8 @@ export const register = data => {
 };
 
 // get user profile
-export const getUser = () => {
-  return fetchApi("get", url, "/profile");
+export const getUser = (token) => {
+  return fetchApi("get", url, "/profile", null, token);
 };
 
 // update user profile
@@ -24,13 +24,13 @@ export const updateUser = data => {
 };
 
 // upgrade user type
-export const upgradeUser = token => {
-  return fetchApi("get", url, "/user/upgrade", token);
+export const upgrade = token => {
+  return fetchApi("get", url, "/user/upgrade", null, token);
 };
 
 // downgrade user type
-export const downgradeUser = token => {
-  return fetchApi("get", url, "/user/downgrade", token);
+export const downgrade = token => {
+  return fetchApi("get", url, "/user/downgrade", null, token);
 };
 
 // save query to track
@@ -54,13 +54,13 @@ export const cancelProduct = (data, token) => {
 };
 
 // get query tracking data
-export const getQuery = () => {
-  return fetchApi("get", url, "/price/query/list");
+export const getQuery = (token) => {
+  return fetchApi("get", url, "/price/query/list", null, token);
 };
 
 // get product tracking data
-export const getProduct = () => {
-  return fetchApi("get", url, "/price/product/list");
+export const getProduct = (token) => {
+  return fetchApi("get", url, "/price/product/list", null, token);
 };
 
 

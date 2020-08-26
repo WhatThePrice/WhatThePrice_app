@@ -4,23 +4,25 @@ import * as api from "../../api";
 import { store } from "store/index";
 
 
-function* getUser() {
+function* downgrade() {
     let token = store.getState().PROFILE.userSession.data.token;
     const headers = { Authorization : `Bearer ${token}`};
-    const { response, error } = yield call(api.getUser, headers);
+    const { response, error } = yield call(api.downgrade, headers);
+
+    console.log(response, error);
 
     if (response && response.data.status === "success"){
-        yield put(Actions.getUserSuccess(response.data))
+        yield put(Actions.downgradeSuccess(response.data))
     }
     if (error) {
-        yield put(Actions.getUserFail(error))
+        yield put(Actions.downgradeFail(error))
     }
 }
 
-function* watchGetUser() {
-    yield takeLatest(Actions.GET_USER, getUser);
+function* watchDowngrade() {
+    yield takeLatest(Actions.DOWNGRADE, downgrade);
 }
 
 export default function* submit() {
-    yield all([fork(watchGetUser)]);
+    yield all([fork(watchDowngrade)]);
 }

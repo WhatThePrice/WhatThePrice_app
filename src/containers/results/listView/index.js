@@ -22,7 +22,7 @@ import ProductList from "components/lists/productList";
 import Modal from "components/modal";
 
 // Data
-import dummyData from "assets/dummyData";
+// import dummyData from "assets/dummyData";
 
 class ListView extends React.Component{
     constructor(props){

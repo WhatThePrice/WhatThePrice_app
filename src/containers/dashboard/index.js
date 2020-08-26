@@ -3,23 +3,27 @@ import { connect } from "react-redux";
 import Actions from "actions";
 
 // Components
-import QueryPriceChart from "components/charts/queryPriceChart";
+// import QueryPriceChart from "components/charts/queryPriceChart";
 import ProductPriceChart from "components/charts/productPriceChart";
-import { Collapse, Button, CardBody, Card } from 'reactstrap';
+import { Collapse, Button, CardBody } from 'reactstrap';
 
 // Style
 import "./dashboard.css";
 
 // Data
-import trackData from "assets/trackData";
+// import trackData from "assets/trackData";
 
 class Dashboard extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            //user
+            //auth checking
             token:"",
             name:"",
+
+            //profile
+            userProfile:[],
+            userType:"",
 
             //product
             queryText:"",
@@ -33,6 +37,7 @@ class Dashboard extends React.Component{
     componentDidMount(){
         this.props.onGetQuery();
         this.props.onGetProduct();
+        this.props.onGetUser();
 
         const { getUserSession } = this.props
         console.log(getUserSession.data)
@@ -45,27 +50,33 @@ class Dashboard extends React.Component{
     }
 
     componentDidUpdate(prevProps){
-        const { getQueryData, getProductData } = this.props;
+        const { getUserData, getQueryData, getProductData } = this.props;
+
+        if(prevProps.getUserData.isLoading && !getUserData.isLoading){
+            if(getUserData && getUserData.data.status === "success"){
+                this.setState({
+                    userProfile:getUserData.data.userProfile,
+                    userType:getUserData.data.userProfile[0].user_type,
+                })
+            }
+        }
+    
         if(prevProps.getQueryData.isLoading && !getQueryData.isLoading){
             // console.log( "get Query data", getQueryData);
             if (getQueryData && getQueryData.data.status === "success"){
-                this.setState({queryDataList:getQueryData.data.query_price}, () => console.log(this.state.queryDataList))
+                this.setState({queryDataList:getQueryData.data.query_price})
             }
         }
 
         if(prevProps.getProductData.isLoading && !getProductData.isLoading){
-            console.log( "get Product data", getProductData.data.product_price);
             if (getProductData && getProductData.data.status === "success"){
                 let productY = Array.from(getProductData.data.product_price.map((item) => item.price))
                 let productX = Array.from(getProductData.data.product_price.map((item) => item.created_at.substr(11,9)))
                 // console.log("price", productY, productX);
-
                 let productTrackData = productX.map(function(item, i){
                     return {x:item, y:productY[i]}
                 });
-
-                console.log("track data", productTrackData)
-
+                // console.log("track data", productTrackData)
                 this.setState({
                     //productDataList:getProductData.data.product_price,
                     productDataList:productTrackData}
@@ -74,26 +85,37 @@ class Dashboard extends React.Component{
         }
     }
 
+    changeUserType() {
+        if (this.state.userType === "free") {
+            this.props.onUpgrade()
+        }
+
+        if (this.state.userType === "premium") {
+            this.props.onDowngrade()
+        }
+    }
 
     render() {
         return(
             <div className="dashboardContainer">
                 <div className="dashboardHeader">
                     <h3>Dashboard</h3>
-                    <button>UPGRADE</button>
+                    <button onClick={() => this.changeUserType()} className="upgradeBtn">{this.state.userType === "free" ? "UPGRADE" : "UNSUBSCRIBE"}</button>
                 </div>
-                <div className="profileContainer">
-                    <ul>
-                        <li>NAME: </li>
-                        <li>EMAIL: </li>
-                        <li>BIRTH DATE: </li>
-                    </ul>
-                    <ul>
-                        <li>GENDER: </li>
-                        <li>POSTCODE: </li>
-                        <li>USERTYPE: </li>
-                    </ul>
-                </div>
+                {this.state.userProfile.map((item) => (
+                    <div key={item.id} className="profileContainer">
+                        <ul>
+                            <li><b className="profileLabel">NAME</b>: {item.name}</li>
+                            <li><b className="profileLabel">EMAIL</b>: {item.email}</li>
+                            <li><b className="profileLabel">BIRTH DATE</b>: {item.birth_date}</li>
+                        </ul>
+                        <ul>
+                            <li><b className="profileLabel">GENDER</b>: {item.gender}</li>
+                            <li><b className="profileLabel">POSTCODE</b>: {item.postcode}</li>
+                            <li><b className="profileLabel">USER TYPE</b>: {item.user_type}</li>
+                        </ul>
+                    </div>
+                ))}
                 <div style={{display:"flex", justifyContent:"space-between", border:"1px solid black"}}>
                     <p>Query tracked</p>
                     <Button onClick={() => this.setState({showTrend:!this.state.showTrend})}>See trend</Button>
@@ -132,10 +154,16 @@ const mapStateToProps = (store) => ({
     getUserSession: Actions.getUserSession(store),
     getQueryData: Actions.getQueryData(store),
     getProductData: Actions.getProductData(store),
+    getUserData: Actions.getUserData(store),
+    getUpgradeData: Actions.getUpgradeData(store),
+    getDowngradeData: Actions.getDowngradeData(store),
 })
 const mapDispatchToProps = {
     onGetQuery: Actions.getQuery,
     onGetProduct: Actions.getProduct,
+    onGetUser: Actions.getUser,
+    onUpgrade: Actions.upgrade,
+    onDowngrade: Actions.downgrade,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
