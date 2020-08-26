@@ -20,8 +20,6 @@ import SearchBar from "components/searchBar";
 import ProductCard from "components/cards/productCard";
 import ProductList from "components/lists/productList";
 import Modal from "components/modal";
-import { getUser } from "api";
-import { getUserSession } from "actions/profile/userSession";
 
 // Data
 // import dummyData from "assets/dummyData";
@@ -47,7 +45,12 @@ class ListView extends React.Component{
 
             // query status
             showModal: false,
-            isLoading: true,    
+
+            // modal props
+            modalTitle:"",
+            modalDescription:"",
+            showModalButton:false,
+            isQuerying: true,    
         }
     }
 
@@ -58,7 +61,9 @@ class ListView extends React.Component{
     }
 
     componentDidUpdate(prevProps){
-        const { getResultData } = this.props;
+        const { getResultData, getSaveQueryData } = this.props;
+        
+        // get result
         if (prevProps.getResultData.isLoading && !getResultData.isLoading){
             console.log(getResultData.data.data)
             if (getResultData.data.status_code === 200) { 
@@ -70,21 +75,23 @@ class ListView extends React.Component{
                 }, () => console.log(this.state.countResults, getResultData.data.analytics.result_count))
             }
 
-            // if (getResultData.status_code === 500) {
-            //     this.setState({
-            //         results:getResultData.data.data,
-            //         countResults:getResultData.data.analytics[0].result_count,
-            //         showModal:!this.state.showModal
-            //     })
-            // }
+            if (getResultData.status_code === 500) {
+                this.setState({
+                    modalTitle: "Scraping Failed",
+                    isQuerying:!this.state.isQuerying,
+                })
+            }
+        }
 
-            // if (getResultData.status_code === 400) {
-            //     this.setState({
-            //         results:getResultData.data.data,
-            //         countResults:getResultData.data.analytics[0].result_count,
-            //         showModal:!this.state.showModal
-            //     })
-            // }
+        if (prevProps.getSaveQueryData.isLoading && !getSaveQueryData.isLoading){
+            console.log(getSaveQueryData.data)
+            if (getSaveQueryData.data.status_code === 200) { 
+                console.log("tracking success")
+                this.setState({
+                    modalDescription:"Your query is saved",
+                    showModalButton:true,
+                })
+            }
         }
     }
 
@@ -100,6 +107,7 @@ class ListView extends React.Component{
         this.setState({
             queryCalled:!this.state.queryCalled,
             showModal:true,
+            modalTitle:"Scraping live data .."
         })
     }
 
@@ -109,6 +117,7 @@ class ListView extends React.Component{
             token:this.state.token,
         }
         this.props.onSaveQuery(data);
+        this.setState({showModal:!this.state.showModal})
         console.log("item tracked")
     }
 
@@ -141,9 +150,10 @@ class ListView extends React.Component{
 
                 {this.state.queryCalled && this.state.showModal && (
                     <Modal 
-                        isLoading={this.state.isLoading}
-                        modalTitle="Scraping live data .."
-                        showModalButton={false}
+                        isLoading={this.state.isQuerying}
+                        modalTitle={this.state.modalTitle}
+                        showModalButton={this.state.showModalButton}
+                        description={this.state.modalDescription}
                         type="grow"
                     />
                 )}
@@ -290,6 +300,7 @@ class ListView extends React.Component{
 
 const mapStateToProps = (store) => ({
     getResultData: Actions.getResultData(store),
+    getSaveQueryData: Actions.getSaveQueryData(store),
     getUserSession: Actions.getUserSession(store)
 })
 const mapDispatchToProps = {

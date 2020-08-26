@@ -22,6 +22,7 @@ class ProductCard extends React.Component{
                 </div>
                 <div className="productNameHolder">
                     <p className="productName">{this.props.name}</p>
+                    <i className="fa fa-heart"></i>
                 </div>
                 <div className="productInfoHolder" >
                     <ul className="productInfoList">

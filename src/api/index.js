@@ -33,7 +33,6 @@ export const downgradeUser = token => {
   return fetchApi("get", url, "/user/downgrade", token);
 };
 
-
 // save query to track
 export const saveQuery = (data, headers) => {
   return fetchApi("post", url, "/tracker/query/save", data, headers);

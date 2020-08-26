@@ -72,18 +72,18 @@ class Header extends React.Component{
                     </div>
                 </div>
                 {this.state.showLogin && 
-                        <Login
-                            showBox={this.state.showLogin}
-                            onHideBox={() => this.setState({showLogin:!this.state.showLogin})}
-                        />
-                    }
-                    {this.state.showModal && <Modal 
-                        isLoading={this.state.isLoading}
-                        modalTitle="Auth"
-                        status={this.state.authStatus}
-                        description={this.state.description}
-                        onClick={() => window.location = "/"}
-                    />}
+                    <Login
+                        showBox={this.state.showLogin}
+                        onHideBox={() => this.setState({showLogin:!this.state.showLogin})}
+                    />
+                }
+                {this.state.showModal && <Modal 
+                    isLoading={this.state.isLoading}
+                    modalTitle="Auth"
+                    status={this.state.authStatus}
+                    description={this.state.description}
+                    onClick={() => window.location = "/"}
+                />}
             </div> 
         )
     }
