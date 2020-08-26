@@ -14,8 +14,8 @@ export const register = data => {
 };
 
 // get user profile
-export const getUser = data => {
-  return fetchApi("get", url, "/profile", data);
+export const getUser = () => {
+  return fetchApi("get", url, "/profile");
 };
 
 // update user profile
@@ -53,14 +53,14 @@ export const cancelProduct = (data, token) => {
   return fetchApi("post", url, "/tracker/product/cancel", data, token);
 };
 
-// get tracking data
-export const getQuery = (token) => {
-  return fetchApi("get", url, "/price/query/list", null, token);
+// get query tracking data
+export const getQuery = () => {
+  return fetchApi("get", url, "/price/query/list");
 };
 
-// get tracking data
-export const getProduct = (token) => {
-  return fetchApi("get", url, "/price/product/list", null, token);
+// get product tracking data
+export const getProduct = () => {
+  return fetchApi("get", url, "/price/product/list");
 };
 
 
