@@ -54,12 +54,12 @@ export const cancelProduct = (data, token) => {
 };
 
 // get tracking data
-export const getQueryData = (data, token) => {
+export const getQuery = (data, token) => {
   return fetchApi("get", url, "/price/query/list", data, token);
 };
 
 // get tracking data
-export const getProductData = (data, token) => {
+export const getProduct = (data, token) => {
   return fetchApi("get", url, "/price/product/list", data, token);
 };
 
