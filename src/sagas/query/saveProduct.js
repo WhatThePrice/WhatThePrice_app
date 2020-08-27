@@ -13,6 +13,7 @@ function* saveProduct({ data }) {
     
     const formData = new FormData();
     formData.append("product_url", data.product_url);
+    formData.append("product_name", data.product_name);
 
     const { response, error } = yield call(api.saveProduct, formData, headers);
     console.log(response, error);

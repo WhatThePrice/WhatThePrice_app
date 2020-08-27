@@ -171,10 +171,11 @@ class ListView extends React.Component{
         }
     }
 
-    onSaveProductPressed(url){
+    onSaveProductPressed(url,name){
         console.log("this url should be passed", url)
         const data = {
             product_url:`https://${url}`,
+            product_name:name,
         }
 
         if (this.state.token === "" ){
@@ -263,7 +264,7 @@ class ListView extends React.Component{
                                                     price={item.price}
                                                     product_id={item.product_id}
                                                     url={item.url}
-                                                    onTrackBtnClick={() => this.onSaveProductPressed(item.url)}
+                                                    onTrackBtnClick={() => this.onSaveProductPressed(item.url, item.name)}
                                                 />
                                             ))
                                         )}

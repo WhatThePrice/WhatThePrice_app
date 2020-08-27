@@ -33,23 +33,3 @@
     display: inline-block;
     width: 100px;
 }
-.dashboardContentHolder{
-    display: flex;
-}
-.dashboardSummaryHolder{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    background-color: khaki;
-}
-.summaryCard{
-    height: 100px;
-    width: 250px;
-    padding: 20px;
-    border: 1px solid gray;
-    border-radius: 5px;
-}
-.summaryPrice{
-    font-size: 40px;
-}

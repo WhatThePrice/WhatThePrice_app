@@ -2,6 +2,23 @@
     display:flex;
     justify-content:space-between;
     border:1px solid black;
+    padding: 10px;
+    height: 50px;
+}
+.trackCardBtnHolder{
+    display: flex;
+    justify-content: space-between;
+    width: 150px;
+}
+.trackBtn{
+    background-color: #219653;
+    border: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+.cancelTrackBtn:hover{
+    background-color: gray;
 }
 .dashboardContentHolder{
     display: flex;
@@ -11,13 +28,12 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 10px;
-    background-color: khaki;
 }
 .summaryCard{
     height: 100px;
     width: 250px;
     padding: 20px;
-    border: 1px solid gray;
+    border: 1px solid #219653;
     border-radius: 5px;
 }
 .summaryPrice{

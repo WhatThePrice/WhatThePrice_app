@@ -1,6 +1,10 @@
 import React from "react";
-import { Collapse, Button, CardBody } from 'reactstrap';
 
+// Components
+import { Collapse, Button, CardBody } from 'reactstrap';
+import ProductPriceChart from "components/charts/productPriceChart";
+
+// Style
 import "./trackCard.css";
 
 
@@ -10,7 +14,11 @@ class TrackCard extends React.Component{
             <div>
                 <div className="trackCardHeader">
                     <p>Query tracked</p>
-                    <Button className="openCardBtn" onClick={this.props.onClick}>See trend</Button>
+                    <div className="trackCardBtnHolder">
+                        <Button className="openCardBtn trackBtn" onClick={this.props.onShow}>See trend</Button>
+                        <button data-toggle="tooltip" title="Stop tracking this product" className="cancelTrackBtn trackBtn" onClick={this.props.onCancel}><i className="fa fa-minus" ></i></button>
+                    </div>
+                    
                 </div>
                 <Collapse isOpen={this.props.isOpen}>
                     <CardBody className="dashboardContentHolder">

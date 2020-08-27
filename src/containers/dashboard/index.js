@@ -4,15 +4,15 @@ import Actions from "actions";
 
 // Components
 // import QueryPriceChart from "components/charts/queryPriceChart";
-import ProductPriceChart from "components/charts/productPriceChart";
 import TrackCard from "components/cards/trackCard";
-import { Collapse, Button, CardBody } from 'reactstrap';
 
 // Style
 import "./dashboard.css";
 
 // Data
 // import trackData from "assets/trackData";
+
+
 
 class Dashboard extends React.Component{
     constructor(props){
@@ -28,6 +28,7 @@ class Dashboard extends React.Component{
 
             //product
             queryText:"",
+            rawData:[],
             queryDataList:[],
             productDataList:[],
 
@@ -71,18 +72,36 @@ class Dashboard extends React.Component{
 
         if(prevProps.getProductData.isLoading && !getProductData.isLoading){
             if (getProductData && getProductData.data.status === "success"){
-                let productY = Array.from(getProductData.data.product_price.map((item) => item.price))
-                let productX = Array.from(getProductData.data.product_price.map((item) => item.created_at.substr(11,9)))
-                // console.log("price", productY, productX);
-                let productTrackData = productX.map(function(item, i){
-                    return {x:item, y:productY[i]}
-                });
-                // console.log("track data", productTrackData)
-                this.setState({
-                    //productDataList:getProductData.data.product_price,
-                    productDataList:productTrackData}
-                    ,() => console.log("final data", this.state.productDataList))
-            }   
+                this.setState({rawData:getProductData.data.product_price})
+
+                //to prepare category array
+                let categoryArr = [...new Set(getProductData.data.product_price.map((item) => item.id))] 
+                
+                let  finalData = [];
+                // separate data according category
+                for (var n=0; n < categoryArr.length; n++){
+                    let productTrackData=[];
+                    for(var i=0; i < getProductData.data.product_price.length; i++){
+                        // to prepare yValue
+                        let productY = Array.from(getProductData.data.product_price
+                            .filter((item) => item.id === categoryArr[n])
+                            .map((item) => item.price)
+                        )
+                        // to prepare xValue
+                        let productX = Array.from(getProductData.data.product_price
+                            .filter((item) => item.id === categoryArr[n])
+                            .map((item) => item.created_at.substr(0,10))
+                        )
+                        //to combine x and y values
+                        productTrackData = productX.map(function(item,k){
+                            return {x:item, y:productY[k]}
+                        });
+                    }
+                    finalData.push(productTrackData)
+                }
+                console.log('final data:',finalData)
+                this.setState({productDataList: finalData}, () =>  console.log("after setState", this.state.productDataList))  
+            }            
         }
     }
 
@@ -117,42 +136,17 @@ class Dashboard extends React.Component{
                         </ul>
                     </div>
                 ))}
-
-                <TrackCard 
-                    data={this.state.productDataList}
-                    isOpen={this.state.showTrend}
-                    onClick={() => this.setState({showTrend:!this.state.showTrend})}
-                />
-
-                <div style={{display:"flex", justifyContent:"space-between", border:"1px solid black"}}>
-                    <p>Query tracked</p>
-                    <Button onClick={() => this.setState({showTrend:!this.state.showTrend})}>See trend</Button>
-                </div>
-                <Collapse isOpen={this.state.showTrend}>
-                    <CardBody className="dashboardContentHolder">
-                    <div className="dashboardSummaryHolder">
-                        <div className="summaryCard">
-                            <p>Today's  price</p>
-                            <h1 className="summaryPrice">RM 329.01</h1>
-                        </div>
-                        <div className="summaryCard">
-                            <p>Cheapest price</p>
-                            <h1 className="summaryPrice">RM 329.00</h1>
-                        </div>
-                        <div className="summaryCard">
-                            <p>Average price</p>
-                            <h1 className="summaryPrice">RM 389.00</h1>
-                        </div>
-                    </div>
-                    <ProductPriceChart 
-                        data={this.state.productDataList}
-                        product="Samsung"
-                        title="Price Trend for Specific product"
-                        color="#219674"
-                        category="min_price"
+                
+                {this.state.productDataList.map((product, index) => (
+                        <TrackCard
+                        key={index}
+                        data={product}
+                        isOpen={this.state.showTrend}
+                        onShow={() => this.setState({showTrend:!this.state.showTrend})}
                     />
-                </CardBody>
-                </Collapse>
+                    )
+                )}
+                
             </div>
         )
     }
