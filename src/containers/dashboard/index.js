@@ -30,6 +30,7 @@ class Dashboard extends React.Component{
             queryText:"",
             rawData:[],
             queryDataList:[],
+            productName:[],
             productDataList:[],
 
             showTrend: false,
@@ -72,11 +73,14 @@ class Dashboard extends React.Component{
 
         if(prevProps.getProductData.isLoading && !getProductData.isLoading){
             if (getProductData && getProductData.data.status === "success"){
-                this.setState({rawData:getProductData.data.product_price})
+                this.setState({rawData:getProductData.data.product_price}, () => console.log("raw data",this.state.rawData))
 
                 //to prepare category array
                 let categoryArr = [...new Set(getProductData.data.product_price.map((item) => item.id))] 
-                
+
+                let productNameArr = [...new Set(getProductData.data.product_price.map((item) => item.product_name))]
+                this.setState({productName:productNameArr}) 
+
                 let  finalData = [];
                 // separate data according category
                 for (var n=0; n < categoryArr.length; n++){
@@ -97,7 +101,7 @@ class Dashboard extends React.Component{
                             return {x:item, y:productY[k]}
                         });
                     }
-                    finalData.push(productTrackData)
+                    finalData.push(productTrackData.sort((a,b) => new Date(a.x) - new Date(b.x)))
                 }
                 console.log('final data:',finalData)
                 this.setState({productDataList: finalData}, () =>  console.log("after setState", this.state.productDataList))  
@@ -139,11 +143,12 @@ class Dashboard extends React.Component{
                 
                 {this.state.productDataList.map((product, index) => (
                         <TrackCard
-                        key={index}
-                        data={product}
-                        isOpen={this.state.showTrend}
-                        onShow={() => this.setState({showTrend:!this.state.showTrend})}
-                    />
+                            key={index}
+                            productName={this.state.productName[index]}
+                            data={product}
+                            isOpen={this.state.showTrend}
+                            onShow={() => this.setState({showTrend:!this.state.showTrend})}
+                        />
                     )
                 )}
                 

@@ -9,11 +9,18 @@ import "./trackCard.css";
 
 
 class TrackCard extends React.Component{
+    constructor(props){
+        super(props)
+        this.state={
+            data:this.props.data
+        }
+        console.log("data inside track card",this.state.data)
+    }
     render() {
         return(
             <div>
                 <div className="trackCardHeader">
-                    <p>Query tracked</p>
+                    <p>{this.props.productName}</p>
                     <div className="trackCardBtnHolder">
                         <Button className="openCardBtn trackBtn" onClick={this.props.onShow}>See trend</Button>
                         <button data-toggle="tooltip" title="Stop tracking this product" className="cancelTrackBtn trackBtn" onClick={this.props.onCancel}><i className="fa fa-minus" ></i></button>
@@ -25,19 +32,23 @@ class TrackCard extends React.Component{
                     <div className="dashboardSummaryHolder">
                         <div className="summaryCard">
                             <p>Today's  price</p>
-                            <h1 className="summaryPrice">RM 329.01</h1>
+                            <h1 className="summaryPrice">RM{this.props.data[0].y}</h1>
                         </div>
                         <div className="summaryCard">
                             <p>Cheapest price</p>
-                            <h1 className="summaryPrice">RM 329.00</h1>
+                            <h1 className="summaryPrice">RM{this.props.data.sort((a,b) => a.y - b.y)[0].y}</h1>
                         </div>
                         <div className="summaryCard">
                             <p>Average price</p>
-                            <h1 className="summaryPrice">RM 389.00</h1>
+                            <h1 className="summaryPrice">RM {
+                                (this.props.data.map((item) => parseInt(item.y)).reduce(function(prev, curr){
+                                    return prev + curr
+                                }) / this.props.data.length).toFixed(2)
+                            }</h1>
                         </div>
                     </div>
                     <ProductPriceChart 
-                        data={this.props.data}
+                        data={this.state.data}
                         product="Samsung"
                         title="Price Trend for Specific product"
                         color="#219674"
