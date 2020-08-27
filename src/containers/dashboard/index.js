@@ -27,8 +27,9 @@ class Dashboard extends React.Component{
             userType:"",
 
             //product
-            queryText:"",
+            
             rawData:[],
+            queryName:[],
             queryDataList:[],
             productName:[],
             productDataList:[],
@@ -65,35 +66,60 @@ class Dashboard extends React.Component{
         }
     
         if(prevProps.getQueryData.isLoading && !getQueryData.isLoading){
-            // console.log( "get Query data", getQueryData);
             if (getQueryData && getQueryData.data.status === "success"){
-                this.setState({queryDataList:getQueryData.data.query_price})
+                //to prepare category array
+                let queryCategoryArr = [...new Set(getQueryData.data.query_price.map((item) => item.id))]
+
+                let queryNameArr = [...new Set(getQueryData.data.query_price.map((item) => item.query))]
+                this.setState({queryName:queryNameArr}) 
+
+                let  finalQueryData = [];
+                // separate data according category
+                for (var n=0; n < queryCategoryArr.length; n++){
+                    let queryTrackData=[];
+                    for(var i=0; i < getQueryData.data.query_price.length; i++){
+                        // to prepare yValue
+                        let productY = Array.from(getQueryData.data.query_price
+                            .filter((item) => item.id === queryCategoryArr[n])
+                            .map((item) => item.min_price)
+                        )
+                        // to prepare xValue
+                        let productX = Array.from(getQueryData.data.query_price
+                            .filter((item) => item.id === queryCategoryArr[n])
+                            .map((item) => item.created_at.substr(0,10))
+                        )
+                        //to combine x and y values
+                        queryTrackData = productX.map(function(item,k){
+                            return {x:item, y:productY[k]}
+                        });
+                    }
+                    finalQueryData.push(queryTrackData.sort((a,b) => new Date(a.x) - new Date(b.x)))
+                }
+                this.setState({queryDataList: finalQueryData})  
             }
         }
 
         if(prevProps.getProductData.isLoading && !getProductData.isLoading){
             if (getProductData && getProductData.data.status === "success"){
-                this.setState({rawData:getProductData.data.product_price}, () => console.log("raw data",this.state.rawData))
-
                 //to prepare category array
-                let categoryArr = [...new Set(getProductData.data.product_price.map((item) => item.id))] 
+                let productCategoryArr = [...new Set(getProductData.data.product_price.map((item) => item.id))] 
 
                 let productNameArr = [...new Set(getProductData.data.product_price.map((item) => item.product_name))]
                 this.setState({productName:productNameArr}) 
 
                 let  finalData = [];
                 // separate data according category
-                for (var n=0; n < categoryArr.length; n++){
+                for (var n=0; n < productCategoryArr.length; n++){
                     let productTrackData=[];
                     for(var i=0; i < getProductData.data.product_price.length; i++){
                         // to prepare yValue
                         let productY = Array.from(getProductData.data.product_price
-                            .filter((item) => item.id === categoryArr[n])
+                            .filter((item) => item.id === productCategoryArr[n])
                             .map((item) => item.price)
                         )
                         // to prepare xValue
                         let productX = Array.from(getProductData.data.product_price
-                            .filter((item) => item.id === categoryArr[n])
+                            .filter((item) => item.id === productCategoryArr[n])
                             .map((item) => item.created_at.substr(0,10))
                         )
                         //to combine x and y values
@@ -103,8 +129,7 @@ class Dashboard extends React.Component{
                     }
                     finalData.push(productTrackData.sort((a,b) => new Date(a.x) - new Date(b.x)))
                 }
-                console.log('final data:',finalData)
-                this.setState({productDataList: finalData}, () =>  console.log("after setState", this.state.productDataList))  
+                this.setState({productDataList: finalData})  
             }            
         }
     }
@@ -141,11 +166,24 @@ class Dashboard extends React.Component{
                     </div>
                 ))}
                 
+                <h2>Product Track</h2>
                 {this.state.productDataList.map((product, index) => (
                         <TrackCard
                             key={index}
                             productName={this.state.productName[index]}
                             data={product}
+                            isOpen={this.state.showTrend}
+                            onShow={() => this.setState({showTrend:!this.state.showTrend})}
+                        />
+                    )
+                )}
+
+                <h2>Query Track</h2>
+                {this.state.queryDataList.map((query, index) => (
+                        <TrackCard
+                            key={index}
+                            productName={this.state.queryName[index]}
+                            data={query}
                             isOpen={this.state.showTrend}
                             onShow={() => this.setState({showTrend:!this.state.showTrend})}
                         />

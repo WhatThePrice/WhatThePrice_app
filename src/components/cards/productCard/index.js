@@ -40,7 +40,7 @@ class ProductCard extends React.Component{
                                 height="30"
                                 loading="lazy"
                             /></li>
-                        <li className="productLink"><a href={this.props.url}><b>BUY NOW</b></a></li>
+                        <li className="productLink"><a href={`http://${this.props.url}`} target="_blank" rel="noopener noreferrer"><b>BUY NOW</b></a></li>
                     </ul>
                 </div>
             </div>

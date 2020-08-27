@@ -31,7 +31,7 @@ class TrackCard extends React.Component{
                     <CardBody className="dashboardContentHolder">
                     <div className="dashboardSummaryHolder">
                         <div className="summaryCard">
-                            <p>Today's  price</p>
+                            <p>Latest  price</p>
                             <h1 className="summaryPrice">RM{this.props.data[0].y}</h1>
                         </div>
                         <div className="summaryCard">
