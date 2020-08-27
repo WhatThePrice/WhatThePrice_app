@@ -5,6 +5,7 @@ import Actions from "actions";
 // Components
 // import QueryPriceChart from "components/charts/queryPriceChart";
 import ProductPriceChart from "components/charts/productPriceChart";
+import TrackCard from "components/cards/trackCard";
 import { Collapse, Button, CardBody } from 'reactstrap';
 
 // Style
@@ -116,6 +117,13 @@ class Dashboard extends React.Component{
                         </ul>
                     </div>
                 ))}
+
+                <TrackCard 
+                    data={this.state.productDataList}
+                    isOpen={this.state.showTrend}
+                    onClick={() => this.setState({showTrend:!this.state.showTrend})}
+                />
+
                 <div style={{display:"flex", justifyContent:"space-between", border:"1px solid black"}}>
                     <p>Query tracked</p>
                     <Button onClick={() => this.setState({showTrend:!this.state.showTrend})}>See trend</Button>
