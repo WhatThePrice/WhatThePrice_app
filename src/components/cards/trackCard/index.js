@@ -14,8 +14,8 @@ class TrackCard extends React.Component{
         this.state={
             data:this.props.data
         }
-        console.log("data inside track card",this.state.data)
     }
+
     render() {
         return(
             <div>
@@ -40,7 +40,7 @@ class TrackCard extends React.Component{
                         </div>
                         <div className="summaryCard">
                             <p>Average price</p>
-                            <h1 className="summaryPrice">RM {
+                            <h1 className="summaryPrice">RM{
                                 (this.props.data.map((item) => parseInt(item.y)).reduce(function(prev, curr){
                                     return prev + curr
                                 }) / this.props.data.length).toFixed(2)
@@ -49,8 +49,8 @@ class TrackCard extends React.Component{
                     </div>
                     <ProductPriceChart 
                         data={this.state.data}
-                        product="Samsung"
-                        title="Price Trend for Specific product"
+                        product={this.props.productName}
+                        title={`Price Trend for ${this.props.productName}`}
                         color="#219674"
                         category="min_price"
                     />

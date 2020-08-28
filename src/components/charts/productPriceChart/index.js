@@ -12,7 +12,7 @@ class ProductPriceChart extends React.Component{
             type: 'line',
             backgroundColor:this.props.color,
             data:{
-                labels: this.props.data.map((item) => item.x),
+                labels: this.props.data.map((item) => new Date(item.x)),
                 datasets:[{
                     label: `Price trend for ${this.props.product}`,
                     data: this.props.data,
@@ -22,6 +22,12 @@ class ProductPriceChart extends React.Component{
             },
             options:{
                 scales:{
+                    xAxes:[{
+                        type:"time",
+                        time:{
+                            unit:"day"
+                        }
+                    }],
                     yAxes:[{
                         ticks:{
                             callback: (value) => `RM${value}`

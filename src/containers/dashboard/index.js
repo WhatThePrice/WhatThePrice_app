@@ -3,16 +3,14 @@ import { connect } from "react-redux";
 import Actions from "actions";
 
 // Components
-// import QueryPriceChart from "components/charts/queryPriceChart";
 import TrackCard from "components/cards/trackCard";
+import Modal from "components/modal";
 
 // Style
 import "./dashboard.css";
 
 // Data
 // import trackData from "assets/trackData";
-
-
 
 class Dashboard extends React.Component{
     constructor(props){
@@ -27,14 +25,20 @@ class Dashboard extends React.Component{
             userType:"",
 
             //product
-            
             rawData:[],
             queryName:[],
             queryDataList:[],
             productName:[],
             productDataList:[],
 
-            showTrend: false,
+            showTrend:false,
+
+            // modal
+            showModal:false,
+            isLoading:true,
+            modalTitle:"",
+            modalDescription:"",
+            showModalButton:false
         }
     }
 
@@ -54,7 +58,7 @@ class Dashboard extends React.Component{
     }
 
     componentDidUpdate(prevProps){
-        const { getUserData, getQueryData, getProductData } = this.props;
+        const { getUserData, getQueryData, getProductData, getUpgradeData, getDowngradeData } = this.props;
 
         if(prevProps.getUserData.isLoading && !getUserData.isLoading){
             if(getUserData && getUserData.data.status === "success"){
@@ -65,6 +69,7 @@ class Dashboard extends React.Component{
             }
         }
     
+        // Query trend data
         if(prevProps.getQueryData.isLoading && !getQueryData.isLoading){
             if (getQueryData && getQueryData.data.status === "success"){
                 //to prepare category array
@@ -75,17 +80,17 @@ class Dashboard extends React.Component{
 
                 let  finalQueryData = [];
                 // separate data according category
-                for (var n=0; n < queryCategoryArr.length; n++){
+                for (let nQ = 0; nQ < queryCategoryArr.length; nQ++){
                     let queryTrackData=[];
-                    for(var i=0; i < getQueryData.data.query_price.length; i++){
+                    for(let iQ=0; iQ < getQueryData.data.query_price.length; iQ++){
                         // to prepare yValue
                         let productY = Array.from(getQueryData.data.query_price
-                            .filter((item) => item.id === queryCategoryArr[n])
+                            .filter((item) => item.id === queryCategoryArr[nQ])
                             .map((item) => item.min_price)
                         )
                         // to prepare xValue
                         let productX = Array.from(getQueryData.data.query_price
-                            .filter((item) => item.id === queryCategoryArr[n])
+                            .filter((item) => item.id === queryCategoryArr[nQ])
                             .map((item) => item.created_at.substr(0,10))
                         )
                         //to combine x and y values
@@ -93,12 +98,13 @@ class Dashboard extends React.Component{
                             return {x:item, y:productY[k]}
                         });
                     }
-                    finalQueryData.push(queryTrackData.sort((a,b) => new Date(a.x) - new Date(b.x)))
+                    finalQueryData.push(queryTrackData)
                 }
                 this.setState({queryDataList: finalQueryData})  
             }
         }
 
+        // Product trend
         if(prevProps.getProductData.isLoading && !getProductData.isLoading){
             if (getProductData && getProductData.data.status === "success"){
                 //to prepare category array
@@ -109,9 +115,9 @@ class Dashboard extends React.Component{
 
                 let  finalData = [];
                 // separate data according category
-                for (var n=0; n < productCategoryArr.length; n++){
+                for (let n=0; n < productCategoryArr.length; n++){
                     let productTrackData=[];
-                    for(var i=0; i < getProductData.data.product_price.length; i++){
+                    for(let i=0; i < getProductData.data.product_price.length; i++){
                         // to prepare yValue
                         let productY = Array.from(getProductData.data.product_price
                             .filter((item) => item.id === productCategoryArr[n])
@@ -126,21 +132,47 @@ class Dashboard extends React.Component{
                         productTrackData = productX.map(function(item,k){
                             return {x:item, y:productY[k]}
                         });
+                        console.log("productTrackDara", productTrackData)
                     }
-                    finalData.push(productTrackData.sort((a,b) => new Date(a.x) - new Date(b.x)))
+                    finalData.push(productTrackData)
                 }
-                this.setState({productDataList: finalData})  
+                this.setState({productDataList:finalData}, () => console.log("after size" , this.state.productDataList))  
             }            
+        }
+
+        // Upgrade profile data
+        if(prevProps.getUpgradeData.isLoading && !getUpgradeData.isLoading){
+            if(getUpgradeData && getUpgradeData.data.status === "success"){
+                this.setState({
+                    isLoading:false,
+                    modalDescription:"Upgrade successful",
+                    showModalButton:true
+                })
+            }
+        }
+
+         // Downgrade profile data
+        if(prevProps.getDowngradeData.isLoading && !getDowngradeData.isLoading){
+            if(getDowngradeData && getDowngradeData.data.status === "success"){
+                this.setState({
+                    isLoading:false,
+                    modalDescription:"Unsubsribe successful",
+                    showModalButton:true
+                })
+            }
         }
     }
 
     changeUserType() {
         if (this.state.userType === "free") {
-            this.props.onUpgrade()
+            this.props.onUpgrade();
+            this.setState({showModal:true , modalTitle:"Upgrade"})
         }
 
         if (this.state.userType === "premium") {
-            this.props.onDowngrade()
+            this.props.onDowngrade();
+            this.setState({showModal:true , modalTitle:"Downgrade"})
+
         }
     }
 
@@ -165,31 +197,64 @@ class Dashboard extends React.Component{
                         </ul>
                     </div>
                 ))}
-                
-                <h2>Product Track</h2>
-                {this.state.productDataList.map((product, index) => (
-                        <TrackCard
-                            key={index}
-                            productName={this.state.productName[index]}
-                            data={product}
-                            isOpen={this.state.showTrend}
-                            onShow={() => this.setState({showTrend:!this.state.showTrend})}
-                        />
-                    )
-                )}
 
-                <h2>Query Track</h2>
-                {this.state.queryDataList.map((query, index) => (
+                {this.state.userType === "free" && (
+                    <div>
+                        <div className="dashboardHeader">
+                            <h3>Product Track</h3>
+                        </div>
                         <TrackCard
-                            key={index}
-                            productName={this.state.queryName[index]}
-                            data={query}
+                            productName={this.state.productName[0]}
+                            data={this.state.productDataList[0]}
                             isOpen={this.state.showTrend}
                             onShow={() => this.setState({showTrend:!this.state.showTrend})}
                         />
-                    )
+                        <h3>Upgrade your subscription to see more tracked product</h3>
+                    </div>
                 )}
                 
+                {this.state.userType === "premium" && (
+                    <div>
+                        <div className="dashboardHeader">
+                            <h3>Product Track</h3>
+                        </div>
+                        {this.state.productDataList.map((product, index) => (
+                                <TrackCard
+                                    key={index}
+                                    productName={this.state.productName[index]}
+                                    data={product}
+                                    isOpen={this.state.showTrend}
+                                    onShow={() => this.setState({showTrend:!this.state.showTrend})}
+                                />
+                            )
+                        )}
+                        <br/>
+                        <br/>
+                        <div className="dashboardHeader">
+                            <h3>Query Track</h3>
+                        </div>
+                        {this.state.queryDataList.map((query, index) => (
+                                <TrackCard
+                                    key={index}
+                                    productName={this.state.queryName[index]}
+                                    data={query}
+                                    isOpen={this.state.showTrend}
+                                    onShow={() => this.setState({showTrend:!this.state.showTrend})}
+                                />
+                            )
+                        )}
+                    </div>
+                )}
+                
+                {this.state.showModal && (
+                    <Modal 
+                        isLoading={this.state.isLoading}
+                        modalTitle={this.state.modalTitle}
+                        showModalButton={this.state.showModalButton}
+                        description={this.state.modalDescription}
+                        onClick={() => this.setState({showModal:false}, () => window.location = "/dashboard")}
+                    />
+                )}
             </div>
         )
     }
