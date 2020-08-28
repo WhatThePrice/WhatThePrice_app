@@ -67,7 +67,7 @@ class Login extends React.Component{
         this.setState({
             showModal:!this.state.showBox,
             isShowing:!this.state.isShowing
-        })
+        }, () => window.location = "/")
     }
 
     render() {
@@ -115,7 +115,6 @@ class Login extends React.Component{
                     modalTitle="Auth"
                     status={this.state.authStatus}
                     description={this.state.description}
-                    showModalButton="true"
                     onClick={() => window.location = "/"}
                 />}
             </div>

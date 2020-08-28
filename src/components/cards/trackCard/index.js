@@ -14,6 +14,7 @@ class TrackCard extends React.Component{
         this.state={
             data:this.props.data
         }
+        console.log("data", this.props.data)
     }
 
     render() {

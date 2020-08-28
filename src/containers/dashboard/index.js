@@ -72,6 +72,8 @@ class Dashboard extends React.Component{
         // Query trend data
         if(prevProps.getQueryData.isLoading && !getQueryData.isLoading){
             if (getQueryData && getQueryData.data.status === "success"){
+                console.log("get query data", getQueryData)
+
                 //to prepare category array
                 let queryCategoryArr = [...new Set(getQueryData.data.query_price.map((item) => item.id))]
 
@@ -99,6 +101,7 @@ class Dashboard extends React.Component{
                         });
                     }
                     finalQueryData.push(queryTrackData)
+                    console.log("final query data", finalQueryData)
                 }
                 this.setState({queryDataList: finalQueryData})  
             }
@@ -132,7 +135,6 @@ class Dashboard extends React.Component{
                         productTrackData = productX.map(function(item,k){
                             return {x:item, y:productY[k]}
                         });
-                        console.log("productTrackDara", productTrackData)
                     }
                     finalData.push(productTrackData)
                 }
@@ -172,7 +174,6 @@ class Dashboard extends React.Component{
         if (this.state.userType === "premium") {
             this.props.onDowngrade();
             this.setState({showModal:true , modalTitle:"Downgrade"})
-
         }
     }
 
@@ -198,7 +199,7 @@ class Dashboard extends React.Component{
                     </div>
                 ))}
 
-                {this.state.userType === "free" && (
+                {(this.state.userType === "free" && this.state.productDataList.length !== 0) &&  (
                     <div>
                         <div className="dashboardHeader">
                             <h3>Product Track</h3>
@@ -209,11 +210,11 @@ class Dashboard extends React.Component{
                             isOpen={this.state.showTrend}
                             onShow={() => this.setState({showTrend:!this.state.showTrend})}
                         />
-                        <h3>Upgrade your subscription to see more tracked product</h3>
+                        <h3>Upgrade your subscription to see more tracked</h3>
                     </div>
                 )}
                 
-                {this.state.userType === "premium" && (
+                {(this.state.userType === "premium" && this.state.productDataList.length !== 0) && (
                     <div>
                         <div className="dashboardHeader">
                             <h3>Product Track</h3>

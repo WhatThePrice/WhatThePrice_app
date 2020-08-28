@@ -49,7 +49,7 @@ class Header extends React.Component{
             isLoading:!this.state.isLoading,
             authStatus: "Logout Successful",
             description: "You will redirect to homepage"
-        })
+        }, () => window.location = "/")
     }
 
     render() {
@@ -61,8 +61,12 @@ class Header extends React.Component{
                     </div>
                     <div>
                         <ul className="headerMenu">
-                            {this.state.userLoggedIn && <li>Hi <b>{this.state.username}</b></li>}
-                            <li><Link to="/dashboard"><i className="fa fa-line-chart"></i>Track</Link></li>
+                            {this.state.userLoggedIn && (
+                                <div style={{display:"flex"}}>
+                                    <li>Hi <b>{this.state.username}</b></li>
+                                    <li><Link to="/dashboard"><i className="fa fa-line-chart"></i>Track</Link></li>
+                                </div>
+                            )}
                             {this.state.userLoggedIn ? (
                                 <li onClick={()=> this.onLogoutPressed()}><i className="fa fa-sign-out" ></i>Logout</li>
                             ) : (
