@@ -44,7 +44,7 @@ class Login extends React.Component{
                     isLoading:!this.state.isLoading,
                     authStatus: "Success",
                     description: "You will redirect to homepage"
-                })
+                }, ()  => window.location = "/")
                 //alert("Success");
                 console.log("login success");
             } else if(getLoginData.error) {
@@ -67,7 +67,7 @@ class Login extends React.Component{
         this.setState({
             showModal:!this.state.showBox,
             isShowing:!this.state.isShowing
-        }, () => window.location = "/")
+        })
     }
 
     render() {
@@ -114,6 +114,7 @@ class Login extends React.Component{
                     isLoading={this.state.isLoading}
                     modalTitle="Auth"
                     status={this.state.authStatus}
+                    showModalButton={this.state.showModalButton}
                     description={this.state.description}
                     onClick={() => window.location = "/"}
                 />}

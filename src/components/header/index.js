@@ -30,16 +30,28 @@ class Header extends React.Component{
 
     componentDidMount() {
         const { getUserSession } = this.props;
-
-        if(getUserSession && getUserSession.data.status === "success") {
+        console.log("header mount" , getUserSession)
+        if(Object.keys(getUserSession.data).length !== 0) {
+            console.log("get user success")
             this.setState({
                 userLoggedIn:true,
                 username:getUserSession.data.user.name,
-            })
-            
-            console.log("user Header", getUserSession)
+            }, () => console.log("user Header", getUserSession))
         }
     }
+
+    // componentDidUpdate(prevProps) {
+    //     const { getUserSession } = this.props;
+    //     if(prevProps.getUserSession.isLoading && !getUserSession.isLoading)
+    //     console.log("header mount" , getUserSession)
+    //     if(Object.keys(getUserSession.data).length !== 0) {
+    //         console.log("get user success")
+    //         this.setState({
+    //             userLoggedIn:true,
+    //             username:getUserSession.data.user.name,
+    //         }, () => console.log("user Header", getUserSession))
+    //     }
+    // }
 
     onLogoutPressed(){    
         this.setState({showModal:!this.state.showBox});    
